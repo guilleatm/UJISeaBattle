@@ -64,20 +64,10 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 	init {
 		//fillCellCoordinates()
-		Assets.createAssets(context, ballSide)
+		Assets.createAssets(context, cellSide.toInt())
 		graphics = Graphics(width, height)
 		//prepareSoundPool(context)
 		model = Model(this, board, computerBoard)
-	}
-
-	private fun fillCellCoordinates() {
-		val step = (cellSide + lineWidth).toFloat()
-		for (i in 0 .. TOTAL_CELLS_WIDTH) {
-			cellX[i] = xOffset + i * step
-			cellY[i] = yOffset + i * step
-		}
-		cellX[3] = (xOffset + 3 * ballSide + 2 * lineWidth).toFloat()
-		cellY[3] = (yOffset + 3 * ballSide + 2 * lineWidth).toFloat()
 	}
 
 	private fun prepareSoundPool(context: Context) {
@@ -141,20 +131,18 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	}
 
 	fun getTouchCells(event: TouchEvent): Pair<Int, Int> {
-		return Pair(Math.floorDiv(event.x - xOffset.toInt(), cellSide.toInt()),
-					Math.floorDiv(event.y - yOffset.toInt(), cellSide.toInt()))
+		return Pair(Math.floorDiv(event.x - xOffset.toInt(), cellSide.toInt()), Math.floorDiv(event.y - yOffset.toInt(), cellSide.toInt()))
 	}
 
 	fun inBoard(col: Int, row: Int): Boolean {
-		return col in CELL_OFFSET.first..(CELL_OFFSET.first + board.numCells) && row in CELL_OFFSET.second..(CELL_OFFSET.second + board.numCells)
+		return col in CELL_OFFSET.first .. (CELL_OFFSET.first + board.numCells) && row in CELL_OFFSET.second .. (CELL_OFFSET.second + board.numCells)
 	}
 
 	override fun onDrawingRequested(): Bitmap? {
 		// if (!updated) return null
 		graphics.clear(BACKGROUND_COLOR)
-		graphics.drawDrawable(
-			Assets.reset, xReset.toFloat(), yReset.toFloat(),
-			ballSide.toFloat(), ballSide.toFloat())
+		graphics.drawDrawable(Assets.ship, xReset.toFloat(), yReset.toFloat(), cellSide * 3, cellSide)
+
 		drawBoard()
 		//drawPieces()
 		//if (model.winner != SquareColor.EMPTY)

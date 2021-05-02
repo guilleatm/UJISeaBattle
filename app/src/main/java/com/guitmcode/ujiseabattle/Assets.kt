@@ -31,11 +31,12 @@ object Assets {
 	private const val SHIP_BITMAP_WIDTH = 66
 	private const val SHIP_BITMAP_HEIGTH = 190
 
-	var ship: Bitmap? = null
+	var ship: Drawable? = null
+	var animatedShip: AnimatedBitmap? = null
 
-    fun createAssets(context: Context, ballSide: Int) {
+    fun createAssets(context: Context, cellSide: Int) {
         val resources = context.resources
-
+/*
 		shipSprites?.recycle()
 		shipSprites = BitmapFactory.decodeResource(resources, R.drawable.barcos)
 
@@ -43,6 +44,9 @@ object Assets {
 			ship?.recycle()
 			ship = getScaledSprite(0, 0, SHIP_BITMAP_WIDTH, SHIP_BITMAP_HEIGTH)
 		}
+*/
+		if (ship == null)
+			ship = context.getDrawable(R.drawable.ship1)
 
 		/*
         ballSprites?.recycle()
