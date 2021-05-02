@@ -9,8 +9,8 @@ class Ship {
 
 	}
 
-	fun clicked(event: TouchHandler.TouchEvent) {
-
+	fun clicked(event: TouchHandler.TouchEvent): Boolean {
+		return true
 	}
 
 }

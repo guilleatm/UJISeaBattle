@@ -23,42 +23,46 @@ object Assets {
     var redBallAnimated: AnimatedBitmap? = null
     var reset: Drawable? = null
 
+
+
+	private var shipSprites: Bitmap? = null
+	private var ships: SpriteSheet? = null
+
+	private const val SHIP_BITMAP_WIDTH = 66
+	private const val SHIP_BITMAP_HEIGTH = 190
+
+	var ship: Bitmap? = null
+
     fun createAssets(context: Context, ballSide: Int) {
         val resources = context.resources
+
+		shipSprites?.recycle()
+		shipSprites = BitmapFactory.decodeResource(resources, R.drawable.barcos)
+
+		ships = SpriteSheet(shipSprites, SHIP_BITMAP_WIDTH, SHIP_BITMAP_HEIGTH).apply {
+			ship?.recycle()
+			ship = getScaledSprite(0, 0, SHIP_BITMAP_WIDTH, SHIP_BITMAP_HEIGTH)
+		}
+
+		/*
         ballSprites?.recycle()
-        ballSprites = BitmapFactory.decodeResource(resources,
-			R.drawable.balls
-		)
-        balls = SpriteSheet(
-			ballSprites,
-			SPRITE_BALL_SIDE,
-			SPRITE_BALL_SIDE
-		).apply {
+        ballSprites = BitmapFactory.decodeResource(resources, R.drawable.balls)
+        balls = SpriteSheet(ballSprites,SPRITE_BALL_SIDE,SPRITE_BALL_SIDE).apply {
             blueBall?.recycle()
-            blueBall = getScaledSprite(0,
-				BLUE_BALL_INDEX, ballSide, ballSide)
+            blueBall = getScaledSprite(0, BLUE_BALL_INDEX, ballSide, ballSide)
             redBall?.recycle()
-            redBall = getScaledSprite(0,
-				RED_BALL_INDEX, ballSide, ballSide)
+            redBall = getScaledSprite(0, RED_BALL_INDEX, ballSide, ballSide)
         }
 
         blueBallAnimated?.recycle()
-        blueBallAnimated =
-			createAnimation(
-				BLUE_BALL_INDEX,
-				ballSide
-			)
+        blueBallAnimated = createAnimation(BLUE_BALL_INDEX, ballSide)
         redBallAnimated?.recycle()
-        redBallAnimated =
-			createAnimation(
-				RED_BALL_INDEX,
-				ballSide
-			)
-
+        redBallAnimated = createAnimation(RED_BALL_INDEX, ballSide)
+*/
+/*
         if (reset == null)
-            reset = context.getDrawable(
-				R.drawable.reset
-			)
+            reset = context.getDrawable(R.drawable.reset)
+*/
     }
 
     private fun createAnimation(index: Int, ballSide: Int): AnimatedBitmap {

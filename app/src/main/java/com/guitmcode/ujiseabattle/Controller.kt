@@ -6,7 +6,6 @@ import android.media.AudioAttributes
 import android.media.SoundPool
 import android.util.Log
 import com.guitmcode.ujiseabattle.Model.SoundPlayer
-import com.guitmcode.ujiseabattle.Model.SquareColor
 import es.uji.vj1229.framework.AnimatedBitmap
 import es.uji.vj1229.framework.Graphics
 import es.uji.vj1229.framework.IGameController
@@ -108,35 +107,6 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 			}
 
 		}
-
-
-
-
-
-
-
-
-		animation?.update(deltaTime)
-		for (event in touchEvents)
-			if (event.type == TouchHandler.TouchType.TOUCH_UP) {
-				if (event.x in xReset..xReset + ballSide && event.y in yReset..yReset + ballSide)
-					model.restart()
-				else {
-					val row = Math.floorDiv(event.y - yOffset.toInt(), ballSide + lineWidth)
-					val col = Math.floorDiv(event.x - xOffset.toInt(), ballSide + lineWidth)
-					if (model.canPlay(row, col)) {
-						model.play(row, col)
-						lastRow = row
-						lastCol = col
-						animation = when (model.getSquare(row, col)) {
-							SquareColor.BLUE -> Assets.blueBallAnimated
-							SquareColor.RED -> Assets.redBallAnimated
-							else -> null
-						}
-						animation?.restart()
-					}
-				}
-			}
 	}
 
 	private fun onTouchDown(event: TouchEvent) {
@@ -211,23 +181,6 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 			}
 
 		}
-	}
-
-	private fun drawPieces() {
-		for (row in 0..2)
-			for (col in 0..2) {
-				val square = model.getSquare(row, col)
-				if (square != SquareColor.EMPTY) {
-					val bitmap = if (row == lastRow && col == lastCol)
-						animation?.currentFrame
-					else
-						if (square == SquareColor.RED)
-							Assets.redBall
-						else
-							Assets.blueBall
-					graphics.drawBitmap(bitmap, cellX[col], cellY[row])
-				}
-			}
 	}
 
 
