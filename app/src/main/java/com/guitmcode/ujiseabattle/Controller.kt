@@ -16,6 +16,7 @@ import java.lang.Float.min
 
 private const val TOTAL_CELLS_WIDTH = 24
 private const val TOTAL_CELLS_HEIGHT = 14
+private val CELL_OFFSET = Pair(1, 2)
 
 class Controller(width: Int, height: Int, context: Context) : IGameController, SoundPlayer {
 	companion object {
@@ -34,7 +35,11 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private val xOffset : Float = (width - TOTAL_CELLS_WIDTH * cellSide) / 2.0f
 	private val yOffset : Float = (height - TOTAL_CELLS_HEIGHT * cellSide) / 2.0f
 
-	private val board = Board(10, Pair(1, 2), cellSide)
+	private val board = Board(10, CELL_OFFSET, cellSide)
+	private val computerBoard = Board(10, Pair(12, 2), cellSide)
+
+	private lateinit var ships: Array<Ship>
+	private var dragged: Ship? = null
 
 	//val originX : Float = board.origin.first * cellSide + xOffset
 	//val originY : Float = board.origin.second * cellSide + yOffset
@@ -63,7 +68,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		Assets.createAssets(context, ballSide)
 		graphics = Graphics(width, height)
 		//prepareSoundPool(context)
-		model = Model(this)
+		model = Model(this, board, computerBoard)
 	}
 
 	private fun fillCellCoordinates() {
@@ -91,6 +96,26 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	}
 
 	override fun onUpdate(deltaTime: Float, touchEvents: List<TouchEvent>) {
+
+		animation?.update(deltaTime)
+
+		for (event in touchEvents) {
+
+			when (event.type) {
+				TouchHandler.TouchType.TOUCH_DOWN -> onTouchDown(event)
+				TouchHandler.TouchType.TOUCH_DRAGGED -> onTouchDragged(event)
+				TouchHandler.TouchType.TOUCH_UP -> onTouchUp(event)
+			}
+
+		}
+
+
+
+
+
+
+
+
 		animation?.update(deltaTime)
 		for (event in touchEvents)
 			if (event.type == TouchHandler.TouchType.TOUCH_UP) {
@@ -112,6 +137,46 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 					}
 				}
 			}
+	}
+
+	private fun onTouchDown(event: TouchEvent) {
+		dragged = null
+		for (ship in ships) {
+			if (ship.clicked(event)) {
+				dragged = ship
+				return
+			}
+		}
+	}
+
+	private fun onTouchDragged(event: TouchEvent) {
+		if (dragged == null) return
+
+		dragged!!.coords = Pair(event.x, event.y)
+
+
+	}
+
+	private fun onTouchUp(event: TouchEvent) {
+		var (col, row) = getTouchCells(event) // col: from 0 to TOTAL_CELLS_WIDTH, row: from 0 to TOTAL_CELLS_HEIGTH
+
+		if (inBoard(col, row)) {
+			col -= CELL_OFFSET.first // col: from 0 to board.numCells - 1
+			row -= CELL_OFFSET.second // row: from 0 to board.numCells - 1
+
+			Log.d("gbug", "Click in cell ($col $row)")
+		}
+
+		dragged = null
+	}
+
+	fun getTouchCells(event: TouchEvent): Pair<Int, Int> {
+		return Pair(Math.floorDiv(event.x - xOffset.toInt(), cellSide.toInt()),
+					Math.floorDiv(event.y - yOffset.toInt(), cellSide.toInt()))
+	}
+
+	fun inBoard(col: Int, row: Int): Boolean {
+		return col in CELL_OFFSET.first..(CELL_OFFSET.first + board.numCells) && row in CELL_OFFSET.second..(CELL_OFFSET.second + board.numCells)
 	}
 
 	override fun onDrawingRequested(): Bitmap? {
@@ -165,46 +230,6 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 			}
 	}
 
-	private fun drawWinnerLine() {
-		val winnerCells = model.winnerCells
-		val row0 = winnerCells[0][0]
-		val row1 = winnerCells[2][0]
-		val col0 = winnerCells[0][1]
-		val col1 = winnerCells[2][1]
-		val x0: Float
-		val x1: Float
-		val y0: Float
-		val y1: Float
-		if (row0 == row1 || col0 == col1) {
-			if (row0 == row1) {
-				y1 = cellY[row0] + 0.5f * ballSide
-				y0 = y1
-			} else {
-				y0 = cellY[row0]
-				y1 = cellY[row1 + 1]
-			}
-			if (col0 == col1) {
-				x1 = cellX[col0] + 0.5f * ballSide
-				x0 = x1
-			} else {
-				x0 = cellX[col0]
-				x1 = cellX[col1 + 1]
-			}
-		} else {
-			if (col0 == 0) {
-				x0 = cellX[0]
-				x1 = cellX[3]
-			} else {
-				x0 = cellX[3]
-				x1 = cellX[0]
-			}
-			y0 = cellY[0]
-			y1 = cellY[3]
-		}
-		graphics.drawLine(x0, y0, x1, y1, lineWidth.toFloat(),
-			WIN_COLOR
-		)
-	}
 
 	override fun playVictory() {
 		//soundPool.play(victoryId, 0.6f, 0.8f, 0, 0, 1f)
