@@ -10,7 +10,6 @@ class UJIBattleActivity : GameActivity() {
         @Suppress("DEPRECATION")
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-        return UJISeaController(displayMetrics.widthPixels,
-            displayMetrics.heightPixels)
+        return UJISeaController(displayMetrics.widthPixels, displayMetrics.heightPixels)
     }
 }
