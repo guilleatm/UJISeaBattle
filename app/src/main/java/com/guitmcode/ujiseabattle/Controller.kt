@@ -1,11 +1,12 @@
-package es.uji.jvilar.frameworktest
+package com.guitmcode.ujiseabattle
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.SoundPool
-import es.uji.jvilar.frameworktest.TicTacToeModel.SoundPlayer
-import es.uji.jvilar.frameworktest.TicTacToeModel.SquareColor
+import com.guitmcode.ujiseabattle.TicTacToeModel.SoundPlayer
+import com.guitmcode.ujiseabattle.TicTacToeModel.SquareColor
+import com.guitmcode.ujiseabattle.R
 import es.uji.vj1229.framework.AnimatedBitmap
 import es.uji.vj1229.framework.Graphics
 import es.uji.vj1229.framework.IGameController
@@ -69,7 +70,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
                 .setMaxStreams(5)
                 .setAudioAttributes(attributes)
                 .build()
-        victoryId = soundPool.load(context, R.raw.victory, 0)
+        victoryId = soundPool.load(context,
+            R.raw.victory, 0)
         moveId = soundPool.load(context, R.raw.move, 0)
     }
 
@@ -100,7 +102,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
     override fun onDrawingRequested(): Bitmap? {
         // if (!updated) return null
         graphics.clear(BACKGROUND_COLOR)
-        graphics.drawDrawable(Assets.reset, xReset.toFloat(), yReset.toFloat(),
+        graphics.drawDrawable(
+            Assets.reset, xReset.toFloat(), yReset.toFloat(),
                 ballSide.toFloat(), ballSide.toFloat())
         drawBoard()
         drawPieces()
@@ -112,10 +115,18 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
     private fun drawBoard() {
         val halfLineWidth = 0.5f * lineWidth
         with(graphics) {
-            drawLine(cellX[1] - halfLineWidth, cellY[0], cellX[1] - halfLineWidth, cellY[3], lineWidthF, LINE_COLOR)
-            drawLine(cellX[2] - halfLineWidth, cellY[0], cellX[2] - halfLineWidth, cellY[3], lineWidthF, LINE_COLOR)
-            drawLine(cellX[0], cellY[1] - halfLineWidth, cellX[3], cellY[1] - halfLineWidth, lineWidthF, LINE_COLOR)
-            drawLine(cellX[0], cellY[2] - halfLineWidth, cellX[3], cellY[2] - halfLineWidth, lineWidthF, LINE_COLOR)
+            drawLine(cellX[1] - halfLineWidth, cellY[0], cellX[1] - halfLineWidth, cellY[3], lineWidthF,
+                LINE_COLOR
+            )
+            drawLine(cellX[2] - halfLineWidth, cellY[0], cellX[2] - halfLineWidth, cellY[3], lineWidthF,
+                LINE_COLOR
+            )
+            drawLine(cellX[0], cellY[1] - halfLineWidth, cellX[3], cellY[1] - halfLineWidth, lineWidthF,
+                LINE_COLOR
+            )
+            drawLine(cellX[0], cellY[2] - halfLineWidth, cellX[3], cellY[2] - halfLineWidth, lineWidthF,
+                LINE_COLOR
+            )
         }
     }
 
@@ -172,7 +183,9 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
             y0 = cellY[0]
             y1 = cellY[3]
         }
-        graphics.drawLine(x0, y0, x1, y1, lineWidthF, WIN_COLOR)
+        graphics.drawLine(x0, y0, x1, y1, lineWidthF,
+            WIN_COLOR
+        )
     }
 
     override fun playVictory() {

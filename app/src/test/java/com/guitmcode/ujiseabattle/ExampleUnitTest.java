@@ -1,4 +1,4 @@
-package es.uji.jvilar.frameworktest;
+package com.guitmcode.ujiseabattle;
 
 import org.junit.Test;
 

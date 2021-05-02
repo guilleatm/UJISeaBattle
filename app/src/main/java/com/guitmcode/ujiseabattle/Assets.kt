@@ -1,9 +1,10 @@
-package es.uji.jvilar.frameworktest
+package com.guitmcode.ujiseabattle
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
+import com.guitmcode.ujiseabattle.R
 import es.uji.vj1229.framework.AnimatedBitmap
 import es.uji.vj1229.framework.Graphics
 import es.uji.vj1229.framework.SpriteSheet
@@ -25,21 +26,39 @@ object Assets {
     fun createAssets(context: Context, ballSide: Int) {
         val resources = context.resources
         ballSprites?.recycle()
-        ballSprites = BitmapFactory.decodeResource(resources, R.drawable.balls)
-        balls = SpriteSheet(ballSprites, SPRITE_BALL_SIDE, SPRITE_BALL_SIDE).apply {
+        ballSprites = BitmapFactory.decodeResource(resources,
+			R.drawable.balls
+		)
+        balls = SpriteSheet(
+			ballSprites,
+			SPRITE_BALL_SIDE,
+			SPRITE_BALL_SIDE
+		).apply {
             blueBall?.recycle()
-            blueBall = getScaledSprite(0, BLUE_BALL_INDEX, ballSide, ballSide)
+            blueBall = getScaledSprite(0,
+				BLUE_BALL_INDEX, ballSide, ballSide)
             redBall?.recycle()
-            redBall = getScaledSprite(0, RED_BALL_INDEX, ballSide, ballSide)
+            redBall = getScaledSprite(0,
+				RED_BALL_INDEX, ballSide, ballSide)
         }
 
         blueBallAnimated?.recycle()
-        blueBallAnimated = createAnimation(BLUE_BALL_INDEX, ballSide)
+        blueBallAnimated =
+			createAnimation(
+				BLUE_BALL_INDEX,
+				ballSide
+			)
         redBallAnimated?.recycle()
-        redBallAnimated = createAnimation(RED_BALL_INDEX, ballSide)
+        redBallAnimated =
+			createAnimation(
+				RED_BALL_INDEX,
+				ballSide
+			)
 
         if (reset == null)
-            reset = context.getDrawable(R.drawable.reset)
+            reset = context.getDrawable(
+				R.drawable.reset
+			)
     }
 
     private fun createAnimation(index: Int, ballSide: Int): AnimatedBitmap {

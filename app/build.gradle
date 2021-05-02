@@ -5,7 +5,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
     defaultConfig {
-        applicationId "es.uji.jvilar.frameworktest"
+        applicationId 'com.guitmcode.covidstats'
         minSdkVersion 24
         targetSdkVersion 30
         versionCode 1

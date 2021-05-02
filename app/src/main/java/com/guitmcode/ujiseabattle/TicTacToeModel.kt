@@ -1,4 +1,4 @@
-package es.uji.jvilar.frameworktest
+package com.guitmcode.ujiseabattle
 
 class TicTacToeModel(private val soundPlayer: SoundPlayer) {
     interface SoundPlayer {
@@ -10,10 +10,12 @@ class TicTacToeModel(private val soundPlayer: SoundPlayer) {
         EMPTY, RED, BLUE
     }
 
-    private val board: Array<Array<SquareColor>> = Array(3) { Array(3) {SquareColor.EMPTY} }
-    var turn: SquareColor = SquareColor.EMPTY
+    private val board: Array<Array<SquareColor>> = Array(3) { Array(3) { SquareColor.EMPTY } }
+    var turn: SquareColor =
+        SquareColor.EMPTY
         private set
-    var winner: SquareColor = SquareColor.EMPTY
+    var winner: SquareColor =
+        SquareColor.EMPTY
         private set
     val winnerCells: Array<IntArray> = Array(3) { intArrayOf(0, 0) }
     private var turnCount = 0
@@ -26,7 +28,8 @@ class TicTacToeModel(private val soundPlayer: SoundPlayer) {
         turnCount = 0
         for (row in 0..2)
             for (column in 0..2)
-                board[row][column] = SquareColor.EMPTY
+                board[row][column] =
+                    SquareColor.EMPTY
         turn = SquareColor.RED
         winner = SquareColor.EMPTY
     }
@@ -52,8 +55,10 @@ class TicTacToeModel(private val soundPlayer: SoundPlayer) {
         } else {
             turnCount++
             if (turnCount == 9) {
-                winner = SquareColor.EMPTY
-                turn = SquareColor.EMPTY
+                winner =
+                    SquareColor.EMPTY
+                turn =
+                    SquareColor.EMPTY
             } else turn = if (turn == SquareColor.RED) SquareColor.BLUE else SquareColor.RED
         }
     }

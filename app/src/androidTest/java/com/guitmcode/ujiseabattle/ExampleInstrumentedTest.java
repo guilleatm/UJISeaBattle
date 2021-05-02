@@ -1,4 +1,4 @@
-package es.uji.jvilar.frameworktest;
+package com.guitmcode.ujiseabattle;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("es.uji.jvilar.frameworktest", appContext.getPackageName());
+        assertEquals("com.guitmcode.ujiseabattle", appContext.getPackageName());
     }
 }
