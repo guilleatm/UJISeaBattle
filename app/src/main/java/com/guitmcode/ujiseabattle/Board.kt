@@ -1,8 +1,9 @@
 package com.guitmcode.ujiseabattle
 
-class Board(val numCells: Int, val origin: Pair<Int, Int>, cellSize: Float) {
+class Board(val numCells: Int, oI: Pair<Int, Int>, cellSize: Float) {
 
 	var cells: Array<Array<Boolean>>
+	val origin: Pair<Float, Float> = Pair(oI.first * cellSize, oI.second * cellSize)
 
 
 	init {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.SoundPool
+import android.util.Log
 import com.guitmcode.ujiseabattle.Model.SoundPlayer
 import com.guitmcode.ujiseabattle.Model.SquareColor
 import es.uji.vj1229.framework.AnimatedBitmap
@@ -18,29 +19,30 @@ private const val TOTAL_CELLS_HEIGHT = 14
 
 class Controller(width: Int, height: Int, context: Context) : IGameController, SoundPlayer {
 	companion object {
-		private const val MARGIN_FRACTION = 0.1f
-		private const val LINEWIDTH_FRACTION = 0.02f
-		private const val BALL_FRACTION = (1 - 2 * MARGIN_FRACTION - 2 * LINEWIDTH_FRACTION) / 3
+
 		private const val BACKGROUND_COLOR = -0xbf0fc0
 		private const val LINE_COLOR = -0x1000000
 		private const val WIN_COLOR = -0xfc000
+
+		private const val MARGIN_FRACTION = 0.1f
+		private const val LINEWIDTH_FRACTION = 0.01f
+		private const val BALL_FRACTION = (1 - 2 * MARGIN_FRACTION - 2 * LINEWIDTH_FRACTION) / 3
 	}
 
 
 	private val cellSide : Float = min(width.toFloat() / TOTAL_CELLS_WIDTH, height.toFloat() / TOTAL_CELLS_HEIGHT)
-	//private val xOffset : Float = (width - TOTAL_CELLS_WIDTH * cellSide) / 2.0f
-	//private val yOffset : Float = (height - TOTAL_CELLS_HEIGHT * cellSide) / 2.0f
+	private val xOffset : Float = (width - TOTAL_CELLS_WIDTH * cellSide) / 2.0f
+	private val yOffset : Float = (height - TOTAL_CELLS_HEIGHT * cellSide) / 2.0f
 
-	private val board = Board(10, Pair(0, 0), cellSide)
+	private val board = Board(10, Pair(1, 2), cellSide)
 
 	//val originX : Float = board.origin.first * cellSide + xOffset
 	//val originY : Float = board.origin.second * cellSide + yOffset
 
 	private val ballSide = (width * BALL_FRACTION).toInt()
 	private val lineWidth = (width * LINEWIDTH_FRACTION).toInt()
-	private val lineWidthF = lineWidth.toFloat()
-	private val xOffset = (width - 3 * ballSide - 2 * lineWidth) / 2
-	private val yOffset = (height - 3 * ballSide - 2 * lineWidth) / 2
+	//private val xOffset = (width - 3 * ballSide - 2 * lineWidth) / 2
+	//private val yOffset = (height - 3 * ballSide - 2 * lineWidth) / 2
 	private val cellX = FloatArray(4)
 	private val cellY = FloatArray(4)
 	private val xReset = (0.5f * (width - ballSide)).toInt()
@@ -95,8 +97,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 				if (event.x in xReset..xReset + ballSide && event.y in yReset..yReset + ballSide)
 					model.restart()
 				else {
-					val row = Math.floorDiv(event.y - yOffset, ballSide + lineWidth)
-					val col = Math.floorDiv(event.x - xOffset, ballSide + lineWidth)
+					val row = Math.floorDiv(event.y - yOffset.toInt(), ballSide + lineWidth)
+					val col = Math.floorDiv(event.x - xOffset.toInt(), ballSide + lineWidth)
 					if (model.canPlay(row, col)) {
 						model.play(row, col)
 						lastRow = row
@@ -129,17 +131,17 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 		val halfLineWidth = 0.5f * lineWidth
 
-		val originX = board.origin.first - halfLineWidth
-		val originY = board.origin.second - halfLineWidth
+		val originX = board.origin.first - halfLineWidth + xOffset
+		val originY = board.origin.second - halfLineWidth + yOffset
 
-		val boardSize = (cellSide + lineWidth) * board.numCells
-		var step = cellSide + lineWidth
+		val boardSize = cellSide * board.numCells
+		var step = cellSide
 
 		with(graphics) {
 
-			for (i in 0 until board.numCells) {
-				drawLine(originX + i * step, originY, originX + i * step, originY + boardSize, lineWidthF, LINE_COLOR)
-				drawLine(originX, originY + i * step, originX + boardSize, originY + i * step, lineWidthF, LINE_COLOR)
+			for (i in 0 until board.numCells + 1) {
+				drawLine(originX + i * step, originY, originX + i * step, originY + boardSize, lineWidth.toFloat(), LINE_COLOR)
+				drawLine(originX, originY + i * step, originX + boardSize, originY + i * step, lineWidth.toFloat(), LINE_COLOR)
 
 			}
 
@@ -199,7 +201,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 			y0 = cellY[0]
 			y1 = cellY[3]
 		}
-		graphics.drawLine(x0, y0, x1, y1, lineWidthF,
+		graphics.drawLine(x0, y0, x1, y1, lineWidth.toFloat(),
 			WIN_COLOR
 		)
 	}
