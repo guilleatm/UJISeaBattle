@@ -43,14 +43,9 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	//val originX : Float = board.origin.first * cellSide + xOffset
 	//val originY : Float = board.origin.second * cellSide + yOffset
 
-	private val ballSide = (width * BALL_FRACTION).toInt()
+
 	private val lineWidth = (width * LINEWIDTH_FRACTION).toInt()
-	//private val xOffset = (width - 3 * ballSide - 2 * lineWidth) / 2
-	//private val yOffset = (height - 3 * ballSide - 2 * lineWidth) / 2
-	private val cellX = FloatArray(4)
-	private val cellY = FloatArray(4)
-	private val xReset = (0.5f * (width - ballSide)).toInt()
-	private val yReset = (height * (1 - MARGIN_FRACTION) - ballSide / 2).toInt()
+
 
 	private val graphics: Graphics
 	private val model: Model
@@ -58,13 +53,12 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private var victoryId = 0
 	private var moveId = 0
 
-	private var lastRow = -1
-	private var lastCol = -1
 	private var animation: AnimatedBitmap? = null
 
 	init {
 		//fillCellCoordinates()
-		Assets.createAssets(context, cellSide.toInt())
+		initShips(context)
+
 		graphics = Graphics(width, height)
 		//prepareSoundPool(context)
 		model = Model(this, board, computerBoard)
@@ -141,9 +135,9 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	override fun onDrawingRequested(): Bitmap? {
 		// if (!updated) return null
 		graphics.clear(BACKGROUND_COLOR)
-		graphics.drawDrawable(Assets.ship, xReset.toFloat(), yReset.toFloat(), cellSide * 3, cellSide)
-
 		drawBoard()
+
+		drawShips()
 		//drawPieces()
 		//if (model.winner != SquareColor.EMPTY)
 			//drawWinnerLine()
@@ -178,6 +172,20 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 	override fun playMove() {
 		//soundPool.play(moveId, 0.6f, 0.8f, 0, 0, 1f)
+	}
+
+	fun initShips(context: Context) {
+		Assets.createAssets(context, cellSide.toInt())
+
+		ships = arrayOf(Ship(Assets.ship!!))
+
+	}
+
+	fun drawShips() {
+
+		for (ship in ships) {
+			graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide * 3, cellSide)
+		}
 	}
 
 }
