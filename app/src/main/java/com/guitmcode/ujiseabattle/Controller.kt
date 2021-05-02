@@ -139,7 +139,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 			for (i in 0 until board.numCells) {
 				drawLine(originX + i * step, originY, originX + i * step, originY + boardSize, lineWidthF, LINE_COLOR)
-				drawLine(originX, originY * i + step, originX + boardSize, originY, lineWidthF, LINE_COLOR)
+				drawLine(originX, originY + i * step, originX + boardSize, originY + i * step, lineWidthF, LINE_COLOR)
 
 			}
 
