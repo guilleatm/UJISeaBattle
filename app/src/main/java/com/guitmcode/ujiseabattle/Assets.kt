@@ -46,7 +46,7 @@ object Assets {
 		}
 */
 		if (ship == null)
-			ship = context.getDrawable(R.drawable.ship1)
+			ship = context.getDrawable(R.drawable.ship)
 
 		/*
         ballSprites?.recycle()
