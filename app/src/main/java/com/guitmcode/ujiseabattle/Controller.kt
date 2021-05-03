@@ -1,9 +1,7 @@
 package com.guitmcode.ujiseabattle
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.RotateDrawable
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.util.Log
@@ -197,6 +195,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		val occupedCells = 3
 
 		ships = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
+
+
 	}
 
 	fun drawShips() {
