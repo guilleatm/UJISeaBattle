@@ -2,7 +2,7 @@ package com.guitmcode.ujiseabattle
 
 import android.util.Log
 
-class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val computerBoard: Board) {
+class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val computerBoard: Board, val ships: Array<Ship>) {
 	interface SoundPlayer {
 		fun playVictory()
 		fun playMove()
@@ -39,12 +39,31 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		}
 	}
 
-	fun bomb(col: Int, row: Int) {
+	fun bomb(col: Int, row: Int): Boolean {
 
-		if (state == SeaBattleAction.PLAYER_TURN && computerBoard.cells[row][col] == Board.CellState.SHIP) {
-			Log.d("gbug", "Jugador toca!!")
-		} else if (state == SeaBattleAction.COMPUTER_TURN && playerBoard.cells[row][col] == Board.CellState.SHIP) {
-			Log.d("gbug", "Máquina toca!!")
+		if (state == SeaBattleAction.PLAYER_TURN) {
+			computerBoard.bombedCells += Pair(col, row)
+
+			if (computerBoard.cells[row][col] == Board.CellState.SHIP)
+				return true // Jugador toca
+
+		} else if (state == SeaBattleAction.COMPUTER_TURN) {
+
+			playerBoard.bombedCells += Pair(col, row)
+
+			if (playerBoard.cells[row][col] == Board.CellState.SHIP)
+				return true // computador toca
+		}
+		return false
+	}
+
+	fun updateGameState() {
+
+		if (state == SeaBattleAction.PLACE_SHIPS) {
+			for (ship in ships) {
+				if (ship.set == false) return
+			}
+			state = SeaBattleAction.PLAYER_TURN
 		}
 	}
 

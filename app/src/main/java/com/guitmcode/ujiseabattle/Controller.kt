@@ -36,7 +36,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private val yOffset : Float = (height - TOTAL_CELLS_HEIGHT * cellSide) / 2.0f
 
 	private val board = Board(BOARD_SIZE, CELL_OFFSET, cellSide.toFloat())
-	private val computerBoard = Board(BOARD_SIZE, Pair(12, 2), cellSide.toFloat())
+	private val computerBoard = Board(BOARD_SIZE, Pair(13, 2), cellSide.toFloat())
 
 	private lateinit var ships: Array<Ship>
 	private var dragged: Ship? = null
@@ -62,7 +62,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 		graphics = Graphics(width, height)
 		//prepareSoundPool(context)
-		model = Model(this, board, computerBoard)
+		model = Model(this, board, computerBoard, ships)
 	}
 
 	private fun prepareSoundPool(context: Context) {
@@ -116,50 +116,70 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private fun onTouchUp(event: TouchEvent) {
 		var (col, row) = getTouchCells(event) // col: from 0 to TOTAL_CELLS_WIDTH, row: from 0 to TOTAL_CELLS_HEIGTH
 
-		if (inBoard(col, row)) {
-			val rCol = col - CELL_OFFSET.first // col: from 0 to board.numCells - 1
-			val rRow = row - CELL_OFFSET.second // row: from 0 to board.numCells - 1
 
-			if (dragged != null) {
 
-				if (dragged!!.fits(rCol, rRow, board)) {
-					dragged!!.coords = Pair(col * cellSide, row * cellSide)
-					dragged!!.set = true
-					dragged = null
-				} else {
-					dragged?.coords = dragged!!.OCoords
+		if (model.state == Model.SeaBattleAction.PLACE_SHIPS) {
+
+			if (board.inBoard(col, row)) { // Soltamos click dentro del tablero del jugador
+				val rCol = col - board.oI.first // col: from 0 to board.numCells - 1
+				val rRow = row - board.oI.second // row: from 0 to board.numCells - 1
+
+				if (dragged != null) {
+
+					if (dragged!!.fits(rCol, rRow, board)) { // El barco cabe en el tablero
+						dragged!!.coords = Pair(col * cellSide, row * cellSide)
+						dragged!!.set = true
+						dragged = null
+						model.updateGameState()
+					} else { // El barco no cabe en el tablero
+						dragged?.coords = dragged!!.OCoords
+					}
+
 				}
-
+			} else { // Hemos soltado el barco fuera del tablero
+				dragged?.coords = dragged!!.OCoords
 			}
-			Log.d("gbug", "Click in cell ($rCol $rRow)")
-		} else {
-			dragged?.coords = dragged!!.OCoords
+
+			dragged = null // Not necessary, just in case
+			return
+
+		} else if (model.state == Model.SeaBattleAction.PLAYER_TURN) {
+			if (computerBoard.inBoard(col, row)) { // Soltamos click dentro del tablero del oponente
+				val rCol = col - computerBoard.oI.first // col: from 0 to board.numCells - 1
+				val rRow = row - computerBoard.oI.second // row: from 0 to board.numCells - 1
+
+				val touched = model.bomb(rCol, rRow)
+			}
 		}
 
-		dragged = null
+
+
+
+
 	}
 
 	fun getTouchCells(event: TouchEvent): Pair<Int, Int> {
 		return Pair(Math.floorDiv(event.x - xOffset.toInt(), cellSide), Math.floorDiv(event.y - yOffset.toInt(), cellSide))
 	}
 
-	fun inBoard(col: Int, row: Int): Boolean {
-		return col in CELL_OFFSET.first .. (CELL_OFFSET.first + board.numCells) && row in CELL_OFFSET.second .. (CELL_OFFSET.second + board.numCells)
-	}
-
 	override fun onDrawingRequested(): Bitmap? {
 		// if (!updated) return null
 		graphics.clear(BACKGROUND_COLOR)
-		drawBoard()
-
+		drawBoard(board)
 		drawShips()
+
+		if (model.state != Model.SeaBattleAction.PLACE_SHIPS) {
+			drawBoard(computerBoard)
+		}
+
+
 		//drawPieces()
 		//if (model.winner != SquareColor.EMPTY)
 			//drawWinnerLine()
 		return graphics.frameBuffer
 	}
 
-	private fun drawBoard() {
+	private fun drawBoard(board: Board) {
 
 		val halfLineWidth = 0.5f * lineWidth
 
@@ -177,6 +197,10 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 			}
 
+			// Drawing bombed cells
+			for (bombedCell in board.bombedCells) {
+				drawLine(originX + (bombedCell.first * step), originY + (bombedCell.second * step), originX + ((bombedCell.first + 1) * step), originY + ((bombedCell.second + 1) * step), lineWidth.toFloat(), LINE_COLOR)
+			}
 		}
 	}
 

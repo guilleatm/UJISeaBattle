@@ -1,9 +1,11 @@
 package com.guitmcode.ujiseabattle
 
-class Board(val numCells: Int, oI: Pair<Int, Int>, cellSize: Float) {
+class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 
 	var cells: Array<Array<CellState>>
 	val origin: Pair<Float, Float> = Pair(oI.first * cellSize, oI.second * cellSize)
+
+	var bombedCells: List<Pair<Int, Int>> = listOf()
 
 	enum class CellState {
 		WATER, SHIP, BOMBED
@@ -20,5 +22,9 @@ class Board(val numCells: Int, oI: Pair<Int, Int>, cellSize: Float) {
 			}
 			cells += col
 		}
+	}
+
+	fun inBoard(col: Int, row: Int): Boolean {
+		return col in oI.first .. (oI.first + numCells) && row in oI.second .. (oI.second + numCells)
 	}
 }
