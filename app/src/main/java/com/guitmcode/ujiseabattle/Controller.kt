@@ -1,7 +1,9 @@
 package com.guitmcode.ujiseabattle
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.RotateDrawable
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.util.Log
@@ -15,6 +17,7 @@ import java.lang.Float.min
 
 private const val TOTAL_CELLS_WIDTH = 24
 private const val TOTAL_CELLS_HEIGHT = 14
+private const val BOARD_SIZE = 10
 private val CELL_OFFSET = Pair(1, 2)
 
 class Controller(width: Int, height: Int, context: Context) : IGameController, SoundPlayer {
@@ -34,8 +37,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private val xOffset : Float = (width - TOTAL_CELLS_WIDTH * cellSide) / 2.0f
 	private val yOffset : Float = (height - TOTAL_CELLS_HEIGHT * cellSide) / 2.0f
 
-	private val board = Board(10, CELL_OFFSET, cellSide.toFloat())
-	private val computerBoard = Board(10, Pair(12, 2), cellSide.toFloat())
+	private val board = Board(BOARD_SIZE, CELL_OFFSET, cellSide.toFloat())
+	private val computerBoard = Board(BOARD_SIZE, Pair(12, 2), cellSide.toFloat())
 
 	private lateinit var ships: Array<Ship>
 	private var dragged: Ship? = null
@@ -120,18 +123,26 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 			val rRow = row - CELL_OFFSET.second // row: from 0 to board.numCells - 1
 
 			if (dragged != null) {
-				dragged!!.coords = Pair(col * cellSide, row * cellSide)
-				dragged!!.set = true
-				dragged = null
+
+				if (dragged!!.fits(rCol, rRow, board)) {
+					dragged!!.coords = Pair(col * cellSide, row * cellSide)
+					dragged!!.set = true
+					dragged = null
+				} else {
+					dragged?.coords = dragged!!.OCoords
+				}
+
 			}
 			Log.d("gbug", "Click in cell ($rCol $rRow)")
+		} else {
+			dragged?.coords = dragged!!.OCoords
 		}
 
 		dragged = null
 	}
 
 	fun getTouchCells(event: TouchEvent): Pair<Int, Int> {
-		return Pair(Math.floorDiv(event.x - xOffset.toInt(), cellSide.toInt()), Math.floorDiv(event.y - yOffset.toInt(), cellSide.toInt()))
+		return Pair(Math.floorDiv(event.x - xOffset.toInt(), cellSide), Math.floorDiv(event.y - yOffset.toInt(), cellSide))
 	}
 
 	fun inBoard(col: Int, row: Int): Boolean {
@@ -184,10 +195,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		Assets.createAssets(context, cellSide.toInt())
 
 		val occupedCells = 3
-		val aux: Int = cellSide.toInt()
 
-		ships = arrayOf(Ship(Assets.ship!!, occupedCells, aux, 0), Ship(Assets.ship!!, occupedCells, aux,1), Ship(Assets.ship!!, occupedCells, aux,2))
-
+		ships = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
 	}
 
 	fun drawShips() {
