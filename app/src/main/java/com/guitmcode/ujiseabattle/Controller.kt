@@ -30,12 +30,12 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	}
 
 
-	private val cellSide : Float = min(width.toFloat() / TOTAL_CELLS_WIDTH, height.toFloat() / TOTAL_CELLS_HEIGHT)
+	private val cellSide : Int = min(width.toFloat() / TOTAL_CELLS_WIDTH, height.toFloat() / TOTAL_CELLS_HEIGHT).toInt()
 	private val xOffset : Float = (width - TOTAL_CELLS_WIDTH * cellSide) / 2.0f
 	private val yOffset : Float = (height - TOTAL_CELLS_HEIGHT * cellSide) / 2.0f
 
-	private val board = Board(10, CELL_OFFSET, cellSide)
-	private val computerBoard = Board(10, Pair(12, 2), cellSide)
+	private val board = Board(10, CELL_OFFSET, cellSide.toFloat())
+	private val computerBoard = Board(10, Pair(12, 2), cellSide.toFloat())
 
 	private lateinit var ships: Array<Ship>
 	private var dragged: Ship? = null
@@ -96,8 +96,9 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private fun onTouchDown(event: TouchEvent) {
 		dragged = null
 		for (ship in ships) {
-			if (ship.clicked(event)) {
+			if (ship.clicked(event) && !ship.set) {
 				dragged = ship
+				dragged!!.coords = Pair(event.x, event.y)
 				return
 			}
 		}
@@ -115,10 +116,15 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		var (col, row) = getTouchCells(event) // col: from 0 to TOTAL_CELLS_WIDTH, row: from 0 to TOTAL_CELLS_HEIGTH
 
 		if (inBoard(col, row)) {
-			col -= CELL_OFFSET.first // col: from 0 to board.numCells - 1
-			row -= CELL_OFFSET.second // row: from 0 to board.numCells - 1
+			val rCol = col - CELL_OFFSET.first // col: from 0 to board.numCells - 1
+			val rRow = row - CELL_OFFSET.second // row: from 0 to board.numCells - 1
 
-			Log.d("gbug", "Click in cell ($col $row)")
+			if (dragged != null) {
+				dragged!!.coords = Pair(col * cellSide, row * cellSide)
+				dragged!!.set = true
+				dragged = null
+			}
+			Log.d("gbug", "Click in cell ($rCol $rRow)")
 		}
 
 		dragged = null
@@ -177,14 +183,17 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	fun initShips(context: Context) {
 		Assets.createAssets(context, cellSide.toInt())
 
-		ships = arrayOf(Ship(Assets.ship!!))
+		val occupedCells = 3
+		val aux: Int = cellSide.toInt()
+
+		ships = arrayOf(Ship(Assets.ship!!, occupedCells, aux, 0), Ship(Assets.ship!!, occupedCells, aux,1), Ship(Assets.ship!!, occupedCells, aux,2))
 
 	}
 
 	fun drawShips() {
 
 		for (ship in ships) {
-			graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide * 3, cellSide)
+			graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
 		}
 	}
 
