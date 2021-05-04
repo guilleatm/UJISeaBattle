@@ -45,7 +45,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			computerBoard.bombedCells += Pair(col, row)
 
 			val touched = isTouched(computerBoard, col, row)
-			
+
 
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
 
