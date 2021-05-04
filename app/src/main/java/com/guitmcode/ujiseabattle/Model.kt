@@ -1,6 +1,8 @@
 package com.guitmcode.ujiseabattle
 
 import android.util.Log
+import java.util.*
+import kotlin.random.Random
 
 class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val computerBoard: Board, val ships: Array<Ship>) {
 	interface SoundPlayer {
@@ -25,6 +27,14 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		restart()
 	}
 
+	fun createComputerBoard(ships: Array<Ship>) {
+		for (ship in ships) {
+			ship.set = true
+			ship.coordsTablero = Pair(Random.nextInt(0, computerBoard.numCells - ship.occupedCells), Random.nextInt(0, computerBoard.numCells - ship.occupedCells))
+		}
+		computerBoard.setShipsOnBoard(ships)
+	}
+
 	fun restart() {
 	}
 
@@ -46,12 +56,17 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 
 			val touched = isTouched(computerBoard, col, row)
 
+			state = SeaBattleAction.COMPUTER_TURN
+
+			computerBomb()
 
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
 
 			playerBoard.bombedCells += Pair(col, row)
 
 			val touched = isTouched(playerBoard, col, row)
+
+			state = SeaBattleAction.PLAYER_TURN
 
 		}
 		return false
@@ -65,8 +80,12 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			for (ship in ships) {
 				if (ship.set == false) return
 			}
+			playerBoard.setShipsOnBoard(ships)
 			state = SeaBattleAction.PLAYER_TURN
 		}
 	}
 
+	fun computerBomb () {
+		bomb(Random.nextInt(0, playerBoard.numCells), Random.nextInt(0, playerBoard.numCells))
+	}
 }

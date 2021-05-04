@@ -9,6 +9,7 @@ private const val DEFAULT_ROW = 2
 class Ship (val drawable: Drawable, val occupedCells: Int, val cellSide: Int, val index: Int, val isHorizontal: Boolean = true){
 
 	var coords: Pair<Int, Int> = Pair(DEFAULT_COL * cellSide, (DEFAULT_ROW + (index * 2)) * cellSide)
+	var coordsTablero: Pair<Int, Int>? = null
 	val OCoords = coords
 	var set = false
 

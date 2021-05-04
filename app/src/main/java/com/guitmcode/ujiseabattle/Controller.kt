@@ -39,6 +39,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private val computerBoard = Board(BOARD_SIZE, Pair(13, 2), cellSide.toFloat())
 
 	private lateinit var ships: Array<Ship>
+	private lateinit var computerShips: Array<Ship>
 	private var dragged: Ship? = null
 
 	//val originX : Float = board.origin.first * cellSide + xOffset
@@ -128,6 +129,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 					if (dragged!!.fits(rCol, rRow, board)) { // El barco cabe en el tablero
 						dragged!!.coords = Pair(col * cellSide, row * cellSide)
+						dragged!!.coordsTablero = Pair(rCol, rRow)
 						dragged!!.set = true
 						dragged = null
 						model.updateGameState()
@@ -220,7 +222,9 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 		ships = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
 
+		computerShips = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
 
+		model.createComputerBoard(computerShips)
 	}
 
 	fun drawShips() {

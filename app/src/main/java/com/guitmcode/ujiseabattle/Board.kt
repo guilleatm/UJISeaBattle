@@ -27,4 +27,18 @@ class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 	fun inBoard(col: Int, row: Int): Boolean {
 		return col in oI.first .. (oI.first + numCells) && row in oI.second .. (oI.second + numCells)
 	}
+
+	fun setShipsOnBoard(ships : Array<Ship>) {
+		for (ship in ships) {
+			if (ship.isHorizontal) {
+				for (i in 0 until ship.occupedCells) {
+					this.cells[ship.coordsTablero!!.second][ship.coordsTablero!!.first + i] = CellState.SHIP
+				}
+			} else {
+				for (i in 0 until ship.occupedCells) {
+					this.cells[ship.coordsTablero!!.second + i][ship.coordsTablero!!.first] = CellState.SHIP
+				}
+			}
+		}
+	}
 }
