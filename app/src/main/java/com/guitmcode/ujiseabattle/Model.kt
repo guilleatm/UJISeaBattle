@@ -44,18 +44,20 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		if (state == SeaBattleAction.PLAYER_TURN) {
 			computerBoard.bombedCells += Pair(col, row)
 
-			if (computerBoard.cells[row][col] == Board.CellState.SHIP)
-				return true // Jugador toca
+			val touched = isTouched(computerBoard, col, row)
+			
 
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
 
 			playerBoard.bombedCells += Pair(col, row)
 
-			if (playerBoard.cells[row][col] == Board.CellState.SHIP)
-				return true // computador toca
+			val touched = isTouched(playerBoard, col, row)
+
 		}
 		return false
 	}
+
+	fun isTouched(board: Board, col: Int, row: Int) = board.cells[row][col] == Board.CellState.SHIP
 
 	fun updateGameState() {
 

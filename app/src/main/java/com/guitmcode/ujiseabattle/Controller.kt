@@ -21,7 +21,7 @@ private val CELL_OFFSET = Pair(1, 2)
 class Controller(width: Int, height: Int, context: Context) : IGameController, SoundPlayer {
 	companion object {
 
-		private const val BACKGROUND_COLOR = -0xbf0fc0
+		private const val BACKGROUND_COLOR = -0xa64f1f
 		private const val LINE_COLOR = -0x1000000
 		private const val WIN_COLOR = -0xfc000
 
