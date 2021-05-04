@@ -52,19 +52,27 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 	fun bomb(col: Int, row: Int): Boolean {
 
 		if (state == SeaBattleAction.PLAYER_TURN) {
-			computerBoard.bombedCells += Pair(col, row)
 
 			val touched = isTouched(computerBoard, col, row)
 
+			computerBoard.bombedCells += Triple(col, row, touched)
+
+			if (touched) {
+				Log.d("marselo", "cagaste crack")
+			}
 			state = SeaBattleAction.COMPUTER_TURN
 
 			computerBomb()
 
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
 
-			playerBoard.bombedCells += Pair(col, row)
-
 			val touched = isTouched(playerBoard, col, row)
+
+			playerBoard.bombedCells += Triple(col, row, touched)
+
+			if (touched) {
+				Log.d("marselo", "cagaste puta")
+			}
 
 			state = SeaBattleAction.PLAYER_TURN
 

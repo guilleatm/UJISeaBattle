@@ -64,6 +64,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		graphics = Graphics(width, height)
 		//prepareSoundPool(context)
 		model = Model(this, board, computerBoard, ships)
+
+		model.createComputerBoard(computerShips)
 	}
 
 	private fun prepareSoundPool(context: Context) {
@@ -191,6 +193,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		val boardSize = cellSide * board.numCells
 		var step = cellSide
 
+		var lineColor = LINE_COLOR
+
 		with(graphics) {
 
 			for (i in 0 until board.numCells + 1) {
@@ -201,7 +205,11 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 			// Drawing bombed cells
 			for (bombedCell in board.bombedCells) {
-				drawLine(originX + (bombedCell.first * step), originY + (bombedCell.second * step), originX + ((bombedCell.first + 1) * step), originY + ((bombedCell.second + 1) * step), lineWidth.toFloat(), LINE_COLOR)
+				var lineColor = LINE_COLOR
+				if (bombedCell.third) {
+					lineColor = WIN_COLOR
+				}
+				drawLine(originX + (bombedCell.first * step), originY + (bombedCell.second * step), originX + ((bombedCell.first + 1) * step), originY + ((bombedCell.second + 1) * step), lineWidth.toFloat(), lineColor)
 			}
 		}
 	}
@@ -223,8 +231,6 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		ships = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
 
 		computerShips = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
-
-		model.createComputerBoard(computerShips)
 	}
 
 	fun drawShips() {

@@ -5,7 +5,7 @@ class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 	var cells: Array<Array<CellState>>
 	val origin: Pair<Float, Float> = Pair(oI.first * cellSize, oI.second * cellSize)
 
-	var bombedCells: List<Pair<Int, Int>> = listOf()
+	var bombedCells: List<Triple<Int, Int, Boolean>> = listOf()
 
 	enum class CellState {
 		WATER, SHIP, BOMBED
