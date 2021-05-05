@@ -60,9 +60,11 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			if (touched) {
 				Log.d("marselo", "cagaste crack")
 			}
-			state = SeaBattleAction.COMPUTER_TURN
+			else {
+				state = SeaBattleAction.COMPUTER_TURN
 
-			computerBomb()
+				computerBomb()
+			}
 
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
 
@@ -71,10 +73,12 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			playerBoard.bombedCells += Triple(col, row, touched)
 
 			if (touched) {
-				Log.d("marselo", "cagaste puta")
+				Log.d("marselo", "cagaste fiera")
+				computerBomb()
 			}
-
-			state = SeaBattleAction.PLAYER_TURN
+			else {
+				state = SeaBattleAction.PLAYER_TURN
+			}
 
 		}
 		return false
