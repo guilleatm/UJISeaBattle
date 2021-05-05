@@ -41,6 +41,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private lateinit var ships: Array<Ship>
 	private lateinit var computerShips: Array<Ship>
 	private var dragged: Ship? = null
+	private var arrastrando : Boolean = false
 
 	//val originX : Float = board.origin.first * cellSide + xOffset
 	//val originY : Float = board.origin.second * cellSide + yOffset
@@ -113,13 +114,20 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 		dragged!!.coords = Pair(event.x, event.y)
 
-
+		arrastrando = true
 	}
 
 	private fun onTouchUp(event: TouchEvent) {
 		var (col, row) = getTouchCells(event) // col: from 0 to TOTAL_CELLS_WIDTH, row: from 0 to TOTAL_CELLS_HEIGTH
 
-
+		for (ship in ships) {
+			if (ship.clicked(event) && !ship.set) {
+				if (arrastrando == false) {
+					ship.isHorizontal = !ship.isHorizontal
+				}
+				Log.d("marselo", ship.isHorizontal.toString())
+			}
+		}
 
 		if (model.state == Model.SeaBattleAction.PLACE_SHIPS) {
 
@@ -145,6 +153,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 			}
 
 			dragged = null // Not necessary, just in case
+			arrastrando = false
 			return
 
 		} else if (model.state == Model.SeaBattleAction.PLAYER_TURN) {
@@ -237,7 +246,12 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		for (ship in ships) {
 			//graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
 			//graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
-			graphics.drawBitmap(Assets.todosShips[2], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+			if (ship.isHorizontal == true) {
+				graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+			}
+			else {
+				graphics.drawBitmap(Assets.todosShips[1], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+			}
 		}
 	}
 
