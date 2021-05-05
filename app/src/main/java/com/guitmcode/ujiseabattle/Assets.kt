@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
+import android.util.Log
 import com.guitmcode.ujiseabattle.R
 import es.uji.vj1229.framework.AnimatedBitmap
 import es.uji.vj1229.framework.Graphics
@@ -22,6 +23,7 @@ object Assets {
     var blueBallAnimated: AnimatedBitmap? = null
     var redBallAnimated: AnimatedBitmap? = null
     var reset: Drawable? = null
+    var barcosMetidos : Boolean = false
 
 
 
@@ -32,6 +34,7 @@ object Assets {
 	private const val SHIP_BITMAP_HEIGTH = 190
 
 	var ship: Drawable? = null
+    var todosShips : ArrayList<Bitmap> = ArrayList()
 	var animatedShip: AnimatedBitmap? = null
 
     fun createAssets(context: Context, cellSide: Int) {
@@ -47,6 +50,20 @@ object Assets {
 */
 		if (ship == null)
 			ship = context.getDrawable(R.drawable.ship)
+
+        if (barcosMetidos == false) {
+            /*todosShips[0] = BitmapFactory.decodeResource(resources, R.drawable.ship)
+            todosShips[1] = BitmapFactory.decodeResource(resources, R.drawable.ship2)
+            todosShips[2] = BitmapFactory.decodeResource(resources, R.drawable.shiproto)
+            todosShips[3] = BitmapFactory.decodeResource(resources, R.drawable.barcoroto2)*/
+            todosShips.add(0, BitmapFactory.decodeResource(resources, R.drawable.ship))
+            todosShips.add(1, BitmapFactory.decodeResource(resources, R.drawable.ship2))
+            todosShips.add(2, BitmapFactory.decodeResource(resources, R.drawable.shiproto))
+            todosShips.add(3, BitmapFactory.decodeResource(resources, R.drawable.barcoroto2))
+            barcosMetidos = true
+        }
+
+        Log.d("marselo", todosShips.toString())
 
 		/*
         ballSprites?.recycle()

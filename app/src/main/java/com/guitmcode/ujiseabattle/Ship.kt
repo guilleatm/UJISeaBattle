@@ -1,5 +1,6 @@
 package com.guitmcode.ujiseabattle
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import es.uji.vj1229.framework.TouchHandler
 

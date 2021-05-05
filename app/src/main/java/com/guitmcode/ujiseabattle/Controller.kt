@@ -234,9 +234,10 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	}
 
 	fun drawShips() {
-
 		for (ship in ships) {
-			graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
+			//graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
+			//graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
+			graphics.drawBitmap(Assets.todosShips[2], ship.coords.first.toFloat(), ship.coords.second.toFloat())
 		}
 	}
 
