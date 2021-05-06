@@ -41,4 +41,12 @@ class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 			}
 		}
 	}
+
+	fun isBombed(col: Int, row: Int): Boolean {
+
+		for (bombedCell in bombedCells)
+			if (bombedCell.first == col && bombedCell.second == row)
+				return true
+		return false
+	}
 }

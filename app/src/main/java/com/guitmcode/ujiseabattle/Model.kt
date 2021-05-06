@@ -39,21 +39,14 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 	}
 
 
-
-	fun onBoardClick(col: Int, row: Int) {
-
-		if (state == SeaBattleAction.PLAYER_TURN) {
-			bomb(col, row)
-		} else if (state == SeaBattleAction.PLACE_SHIPS) {
-
-		}
-	}
-
-	fun bomb(col: Int, row: Int): Boolean {
+	fun bomb(col: Int, row: Int) {
 
 		if (state == SeaBattleAction.PLAYER_TURN) {
 
 			val touched = isTouched(computerBoard, col, row)
+			val isBombed = computerBoard.isBombed(col, row)
+
+			if (isBombed) return
 
 			computerBoard.bombedCells += Triple(col, row, touched)
 
@@ -69,6 +62,9 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
 
 			val touched = isTouched(playerBoard, col, row)
+			val isBombed = playerBoard.isBombed(col, row)
+
+			if (isBombed) return
 
 			playerBoard.bombedCells += Triple(col, row, touched)
 
@@ -81,7 +77,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			}
 
 		}
-		return false
+		return
 	}
 
 	fun isTouched(board: Board, col: Int, row: Int) = board.cells[row][col] == Board.CellState.SHIP
