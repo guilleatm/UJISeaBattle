@@ -267,10 +267,10 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		for (ship in computerShips) {
 			//graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
 			//graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
-			if (ship.isHorizontal == true && ship.sank == 0) {
+			if (ship.isHorizontal && ship.isSank()) {
 				graphics.drawBitmap(Assets.todosShips[2], ship.coords.first.toFloat(), ship.coords.second.toFloat())
 			}
-			else if (ship.isHorizontal != true && ship.sank == 0)  {
+			else if (!ship.isHorizontal && ship.isSank())  {
 				graphics.drawBitmap(Assets.todosShips[3], ship.coords.first.toFloat(), ship.coords.second.toFloat())
 			}
 		}

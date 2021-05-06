@@ -31,6 +31,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		for (ship in ships) {
 			ship.set = true
 			ship.coordsTablero = Pair(Random.nextInt(0, computerBoard.numCells - ship.occupedCells), Random.nextInt(0, computerBoard.numCells - ship.occupedCells))
+			ship.setCoords() // Para meter las coordenadas reales para e dibujado de sprites
 		}
 		computerBoard.setShipsOnBoard(ships)
 	}
