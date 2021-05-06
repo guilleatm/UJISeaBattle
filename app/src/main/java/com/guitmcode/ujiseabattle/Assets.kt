@@ -56,10 +56,14 @@ object Assets {
             todosShips[1] = BitmapFactory.decodeResource(resources, R.drawable.ship2)
             todosShips[2] = BitmapFactory.decodeResource(resources, R.drawable.shiproto)
             todosShips[3] = BitmapFactory.decodeResource(resources, R.drawable.barcoroto2)*/
-            todosShips.add(0, BitmapFactory.decodeResource(resources, R.drawable.ship))
+            /*todosShips.add(0, BitmapFactory.decodeResource(resources, R.drawable.ship))
             todosShips.add(1, BitmapFactory.decodeResource(resources, R.drawable.ship2))
             todosShips.add(2, BitmapFactory.decodeResource(resources, R.drawable.shiproto))
-            todosShips.add(3, BitmapFactory.decodeResource(resources, R.drawable.barcoroto2))
+            todosShips.add(3, BitmapFactory.decodeResource(resources, R.drawable.barcoroto2))*/
+            todosShips.add(0, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship), cellSide * 5, (cellSide * 1.5f).toInt(), true))
+            todosShips.add(1, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship2), (cellSide * 1.5f).toInt(),cellSide * 5, true))
+            todosShips.add(2, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto), cellSide * 5, (cellSide * 1.5f).toInt(), true))
+            todosShips.add(3, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.barcoroto2), (cellSide * 1.5f).toInt(),cellSide * 5, true))
             barcosMetidos = true
         }
 

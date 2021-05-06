@@ -120,6 +120,10 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private fun onTouchUp(event: TouchEvent) {
 		var (col, row) = getTouchCells(event) // col: from 0 to TOTAL_CELLS_WIDTH, row: from 0 to TOTAL_CELLS_HEIGTH
 
+		val halfLineWidth = 0.5f * lineWidth
+		val originX = board.origin.first - halfLineWidth + xOffset
+		val originY = board.origin.second - halfLineWidth + yOffset
+
 		for (ship in ships) {
 			if (ship.clicked(event) && !ship.set) {
 				if (arrastrando == false) {
@@ -138,7 +142,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 				if (dragged != null) {
 
 					if (dragged!!.fits(rCol, rRow, board)) { // El barco cabe en el tablero
-						dragged!!.coords = Pair(col * cellSide, row * cellSide)
+						//dragged!!.coords = Pair(col * cellSide, row * cellSide)
+						dragged!!.coords = Pair((originX + cellSide * rCol).toInt(), (originY + cellSide * rRow).toInt())
 						dragged!!.coordsTablero = Pair(rCol, rRow)
 						dragged!!.set = true
 						dragged = null
@@ -246,11 +251,27 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		for (ship in ships) {
 			//graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
 			//graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
-			if (ship.isHorizontal == true) {
+			if (ship.isHorizontal == true && ship.sank != 0) {
 				graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat())
 			}
-			else {
+			else if (ship.isHorizontal == false && ship.sank != 0) {
 				graphics.drawBitmap(Assets.todosShips[1], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+			}
+			else if (ship.isHorizontal == true && ship.sank == 0) {
+				graphics.drawBitmap(Assets.todosShips[2], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+			}
+			else if (ship.isHorizontal != true && ship.sank == 0) {
+				graphics.drawBitmap(Assets.todosShips[3], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+			}
+		}
+		for (ship in computerShips) {
+			//graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
+			//graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
+			if (ship.isHorizontal == true && ship.sank == 0) {
+				graphics.drawBitmap(Assets.todosShips[2], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+			}
+			else if (ship.isHorizontal != true && ship.sank == 0)  {
+				graphics.drawBitmap(Assets.todosShips[3], ship.coords.first.toFloat(), ship.coords.second.toFloat())
 			}
 		}
 	}
