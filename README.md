@@ -8,4 +8,4 @@
 6. Indicar cuando se ha hundido el barco entero **DONE**
 7. Determinar condicion de derrota/victoria **DONE**
 8. Boton para reiniciar el juego
-9. Que no se puedan poner barcos sobrepuestos (ni en player ni computer)
+9. Que no se puedan poner barcos superpuestos (ni en player ni computer) **DONE**

@@ -30,7 +30,10 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 	fun createComputerBoard(ships: Array<Ship>) {
 		for (ship in ships) {
 			ship.set = true
-			ship.coordsTablero = Pair(Random.nextInt(0, computerBoard.numCells - ship.occupedCells), Random.nextInt(0, computerBoard.numCells - ship.occupedCells))
+
+			do {
+				ship.coordsTablero = Pair(Random.nextInt(0, computerBoard.numCells - ship.occupedCells), Random.nextInt(0, computerBoard.numCells - ship.occupedCells))
+			} while (!ship.fits(ship.coordsTablero!!.first, ship.coordsTablero!!.second, computerBoard))
 			ship.setCoords() // Para meter las coordenadas reales para e dibujado de sprites
 		}
 		computerBoard.setShipsOnBoard(ships)
@@ -104,7 +107,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			for (ship in ships) {
 				if (!ship.set) return
 			}
-			playerBoard.setShipsOnBoard(ships)
+			playerBoard.setShipsOnBoard(ships) // #JIC
 			state = SeaBattleAction.PLAYER_TURN
 		}
 	}

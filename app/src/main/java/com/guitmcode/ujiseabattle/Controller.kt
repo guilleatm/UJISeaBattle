@@ -146,6 +146,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 						dragged!!.coords = Pair((originX + cellSide * rCol).toInt(), (originY + cellSide * rRow).toInt())
 						dragged!!.coordsTablero = Pair(rCol, rRow)
 						dragged!!.set = true
+						board.setShipOnBoard(dragged!!)
 						dragged = null
 						model.updateGameState()
 					} else { // El barco no cabe en el tablero
