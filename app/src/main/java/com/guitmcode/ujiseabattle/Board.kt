@@ -6,6 +6,7 @@ class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 	val origin: Pair<Float, Float> = Pair(oI.first * cellSize, oI.second * cellSize)
 
 	var bombedCells: List<Triple<Int, Int, Boolean>> = listOf()
+	var ships: Array<Ship>? = null
 
 	enum class CellState {
 		WATER, SHIP, BOMBED
@@ -29,6 +30,7 @@ class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 	}
 
 	fun setShipsOnBoard(ships : Array<Ship>) {
+		this.ships = ships
 		for (ship in ships) {
 			if (ship.isHorizontal) {
 				for (i in 0 until ship.occupedCells) {
@@ -48,5 +50,18 @@ class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 			if (bombedCell.first == col && bombedCell.second == row)
 				return true
 		return false
+	}
+
+	fun getShip (col: Int, row: Int): Ship? {
+		for (ship in ships!!) {
+			if (ship.inCell(col, row)) return ship
+		}
+		return null
+	}
+
+	fun allShipsSank(): Boolean {
+		for (ship in ships!!)
+			if (!ship.isSank()) return false
+		return true
 	}
 }

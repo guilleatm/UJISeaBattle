@@ -51,11 +51,16 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			computerBoard.bombedCells += Triple(col, row, touched)
 
 			if (touched) {
-				Log.d("marselo", "cagaste crack")
-			}
-			else {
-				state = SeaBattleAction.COMPUTER_TURN
+				val touchedShip = computerBoard.getShip(col, row)
+				touchedShip!!.updateSank()
+				val playerWins = computerBoard.allShipsSank()
 
+				if (playerWins) {
+					state = SeaBattleAction.END
+					Log.d("marselo", "Todos los barcos del computer hundidos")
+				}
+			} else {
+				state = SeaBattleAction.COMPUTER_TURN
 				computerBomb()
 			}
 
@@ -64,15 +69,24 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			val touched = isTouched(playerBoard, col, row)
 			val isBombed = playerBoard.isBombed(col, row)
 
-			if (isBombed) return
+			if (isBombed) computerBomb()
 
 			playerBoard.bombedCells += Triple(col, row, touched)
 
 			if (touched) {
-				Log.d("marselo", "cagaste fiera")
-				computerBomb()
-			}
-			else {
+
+				val touchedShip = playerBoard.getShip(col, row)
+				touchedShip!!.updateSank()
+
+				val computerWins = playerBoard.allShipsSank()
+
+				if (computerWins) {
+					state = SeaBattleAction.END
+					Log.d("marselo", "Computer wins")
+				}
+				else
+					computerBomb()
+			} else {
 				state = SeaBattleAction.PLAYER_TURN
 			}
 
@@ -86,14 +100,14 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 
 		if (state == SeaBattleAction.PLACE_SHIPS) {
 			for (ship in ships) {
-				if (ship.set == false) return
+				if (!ship.set) return
 			}
 			playerBoard.setShipsOnBoard(ships)
 			state = SeaBattleAction.PLAYER_TURN
 		}
 	}
 
-	fun computerBomb () {
+	private fun computerBomb () {
 		bomb(Random.nextInt(0, playerBoard.numCells), Random.nextInt(0, playerBoard.numCells))
 	}
 }

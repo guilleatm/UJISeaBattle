@@ -13,6 +13,7 @@ class Ship (val drawable: Drawable, val occupedCells: Int, val cellSide: Int, va
 	var coordsTablero: Pair<Int, Int>? = null
 	val OCoords = coords
 	var set = false
+	var sank = occupedCells
 
 
 	fun clicked(event: TouchHandler.TouchEvent): Boolean {
@@ -23,5 +24,22 @@ class Ship (val drawable: Drawable, val occupedCells: Int, val cellSide: Int, va
 	fun fits(col: Int, row: Int, board: Board): Boolean {
 		return (isHorizontal && col + occupedCells <= board.numCells) || (!isHorizontal && row + occupedCells <= board.numCells)
 	}
+
+	fun inCell(col: Int, row: Int): Boolean {
+		val cell = Pair(col, row)
+		if (isHorizontal)
+			for (i in 0 until occupedCells)
+				if (cell == Pair(coordsTablero!!.first + i, coordsTablero!!.second)) return true
+		else
+			for (i in 0 until occupedCells)
+				if (cell == Pair(coordsTablero!!.first + i, coordsTablero!!.second)) return true
+		return false
+	}
+
+	fun updateSank() {
+		sank--
+	}
+
+	fun isSank() = sank <= 0
 
 }
