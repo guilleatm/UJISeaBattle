@@ -11,19 +11,19 @@ import es.uji.vj1229.framework.Graphics
 import es.uji.vj1229.framework.SpriteSheet
 
 object Assets {
-    private const val BALL_DURATION = 0.2f
-    private const val BALL_FRAMES = 10
-    private const val SPRITE_BALL_SIDE = 128
-    private const val RED_BALL_INDEX = 0
-    private const val BLUE_BALL_INDEX = 3
-    private var ballSprites: Bitmap? = null
-    private var balls: SpriteSheet? = null
-    var blueBall: Bitmap? = null
-    var redBall: Bitmap? = null
-    var blueBallAnimated: AnimatedBitmap? = null
-    var redBallAnimated: AnimatedBitmap? = null
-    var reset: Drawable? = null
-    var barcosMetidos : Boolean = false
+	private const val BALL_DURATION = 0.2f
+	private const val BALL_FRAMES = 10
+	private const val SPRITE_BALL_SIDE = 128
+	private const val RED_BALL_INDEX = 0
+	private const val BLUE_BALL_INDEX = 3
+	private var ballSprites: Bitmap? = null
+	private var balls: SpriteSheet? = null
+	var blueBall: Bitmap? = null
+	var redBall: Bitmap? = null
+	var blueBallAnimated: AnimatedBitmap? = null
+	var redBallAnimated: AnimatedBitmap? = null
+	var reset: Drawable? = null
+	var barcosMetidos : Boolean = false
 
 
 
@@ -34,11 +34,11 @@ object Assets {
 	private const val SHIP_BITMAP_HEIGTH = 190
 
 	var ship: Drawable? = null
-    var todosShips : ArrayList<Bitmap> = ArrayList()
+	var todosShips : ArrayList<Bitmap> = ArrayList()
 	var animatedShip: AnimatedBitmap? = null
 
-    fun createAssets(context: Context, cellSide: Int) {
-        val resources = context.resources
+	fun createAssets(context: Context, cellSide: Int) {
+		val resources = context.resources
 /*
 		shipSprites?.recycle()
 		shipSprites = BitmapFactory.decodeResource(resources, R.drawable.barcos)
@@ -51,23 +51,27 @@ object Assets {
 		if (ship == null)
 			ship = context.getDrawable(R.drawable.ship)
 
-        if (barcosMetidos == false) {
-            /*todosShips[0] = BitmapFactory.decodeResource(resources, R.drawable.ship)
-            todosShips[1] = BitmapFactory.decodeResource(resources, R.drawable.ship2)
-            todosShips[2] = BitmapFactory.decodeResource(resources, R.drawable.shiproto)
-            todosShips[3] = BitmapFactory.decodeResource(resources, R.drawable.barcoroto2)*/
-            /*todosShips.add(0, BitmapFactory.decodeResource(resources, R.drawable.ship))
-            todosShips.add(1, BitmapFactory.decodeResource(resources, R.drawable.ship2))
-            todosShips.add(2, BitmapFactory.decodeResource(resources, R.drawable.shiproto))
-            todosShips.add(3, BitmapFactory.decodeResource(resources, R.drawable.barcoroto2))*/
-            todosShips.add(0, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship), cellSide * 5, (cellSide * 1.5f).toInt(), true))
-            todosShips.add(1, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship2), (cellSide * 1.5f).toInt(),cellSide * 5, true))
-            todosShips.add(2, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto), cellSide * 5, (cellSide * 1.5f).toInt(), true))
-            todosShips.add(3, Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.barcoroto2), (cellSide * 1.5f).toInt(),cellSide * 5, true))
-            barcosMetidos = true
-        }
+		if (!barcosMetidos) {
+			/*todosShips[0] = BitmapFactory.decodeResource(resources, R.drawable.ship)
+			todosShips[1] = BitmapFactory.decodeResource(resources, R.drawable.ship2)
+			todosShips[2] = BitmapFactory.decodeResource(resources, R.drawable.shiproto)
+			todosShips[3] = BitmapFactory.decodeResource(resources, R.drawable.barcoroto2)*/
+			/*todosShips.add(0, BitmapFactory.decodeResource(resources, R.drawable.ship))
+			todosShips.add(1, BitmapFactory.decodeResource(resources, R.drawable.ship2))
+			todosShips.add(2, BitmapFactory.decodeResource(resources, R.drawable.shiproto))
+			todosShips.add(3, BitmapFactory.decodeResource(resources, R.drawable.barcoroto2))*/
 
-        Log.d("marselo", todosShips.toString())
+			val SHIP_LONG = 3
+			val SHIP_FAT = 1
+
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship2), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.barcoroto2), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
+			barcosMetidos = true
+		}
+
+		//Log.d("marselo", todosShips.toString())
 
 		/*
         ballSprites?.recycle()
@@ -88,18 +92,18 @@ object Assets {
         if (reset == null)
             reset = context.getDrawable(R.drawable.reset)
 */
-    }
+	}
 
-    private fun createAnimation(index: Int, ballSide: Int): AnimatedBitmap {
-        val frames = Array<Bitmap>(BALL_FRAMES) {
-            val side = ballSide * (it + 1) / BALL_FRAMES
-            val sprite = balls!!.getScaledSprite(0, index, side, side)
-            val x = (ballSide - side) / 2f
-            with (Graphics(ballSide, ballSide)) {
-                drawBitmap(sprite, x, x)
-                frameBuffer
-            }
-        }
-        return AnimatedBitmap(BALL_DURATION, false, *frames)
-    }
+	private fun createAnimation(index: Int, ballSide: Int): AnimatedBitmap {
+		val frames = Array<Bitmap>(BALL_FRAMES) {
+			val side = ballSide * (it + 1) / BALL_FRAMES
+			val sprite = balls!!.getScaledSprite(0, index, side, side)
+			val x = (ballSide - side) / 2f
+			with (Graphics(ballSide, ballSide)) {
+				drawBitmap(sprite, x, x)
+				frameBuffer
+			}
+		}
+		return AnimatedBitmap(BALL_DURATION, false, *frames)
+	}
 }
