@@ -2,6 +2,7 @@ package com.guitmcode.ujiseabattle
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.util.Log
 import es.uji.vj1229.framework.TouchHandler
 
 private const val DEFAULT_COL = 14
@@ -27,12 +28,20 @@ class Ship (val drawable: Drawable, val occupedCells: Int, val cellSide: Int, va
 
 	fun inCell(col: Int, row: Int): Boolean {
 		val cell = Pair(col, row)
-		if (isHorizontal)
-			for (i in 0 until occupedCells)
-				if (cell == Pair(coordsTablero!!.first + i, coordsTablero!!.second)) return true
-		else
-			for (i in 0 until occupedCells)
-				if (cell == Pair(coordsTablero!!.first + i, coordsTablero!!.second)) return true
+		if (isHorizontal) {
+			for (i in 0 until occupedCells) {
+				if (cell == Pair(coordsTablero!!.first + i, coordsTablero!!.second)) {
+					return true
+				}
+			}
+		}
+		else {
+			for (j in 0 until occupedCells) {
+				if (cell == Pair(coordsTablero!!.first, coordsTablero!!.second + j)) {
+					return true
+				}
+			}
+		}
 		return false
 	}
 

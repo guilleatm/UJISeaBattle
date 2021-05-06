@@ -84,8 +84,9 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 					state = SeaBattleAction.END
 					Log.d("marselo", "Computer wins")
 				}
-				else
+				else {
 					computerBomb()
+				}
 			} else {
 				state = SeaBattleAction.PLAYER_TURN
 			}
