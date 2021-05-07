@@ -158,6 +158,7 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 				val rCol = col - board.oI.first // col: from 0 to board.numCells - 1
 				val rRow = row - board.oI.second // row: from 0 to board.numCells - 1
 
+				Log.d("marselo", Pair(rCol, rRow).toString())
 				if (dragged != null) {
 
 					if (dragged!!.fits(rCol, rRow, board)) { // El barco cabe en el tablero

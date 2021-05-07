@@ -23,6 +23,9 @@ class Ship (val drawable: Drawable, val occupedCells: Int, val cellSide: Int, va
 	}
 
 	fun fits(col: Int, row: Int, board: Board): Boolean {
+		if ((col >= 9 && isHorizontal) || (row >= 9 && !isHorizontal)) {
+			return false
+		}
 		if (isHorizontal) {
 			for (i in 0 until occupedCells) {
 				if (board.cells[row][col + i] == Board.CellState.SHIP) {
