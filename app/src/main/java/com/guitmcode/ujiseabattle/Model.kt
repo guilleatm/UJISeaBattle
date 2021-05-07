@@ -12,6 +12,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 
 	var state = SeaBattleAction.PLACE_SHIPS
 		private set
+	var lastTouch: Pair<Int, Int>? = null
 
 	enum class SeaBattleAction {
 		PLACE_SHIPS,
@@ -58,7 +59,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 				}
 			} else {
 				state = SeaBattleAction.COMPUTER_TURN
-				computerBomb(false, col, row)
+				computerBomb()
 			}
 
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
@@ -66,7 +67,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			val touched = isTouched(playerBoard, col, row)
 			val isBombed = playerBoard.isBombed(col, row)
 
-			if (isBombed) computerBomb(false, col, row)
+			if (isBombed) computerBomb()
 
 			playerBoard.bombedCells += Triple(col, row, touched)
 
@@ -82,7 +83,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 					Log.d("marselo", "Computer wins")
 				}
 				else {
-					computerBomb(true, col, row)
+					computerBomb()
 				}
 			} else {
 				state = SeaBattleAction.PLAYER_TURN
@@ -105,22 +106,45 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		}
 	}
 
-	private fun computerBomb (ultimoTocado : Boolean, col: Int, row: Int) {
-		if (ultimoTocado == false) {
-			bomb(Random.nextInt(0, playerBoard.numCells), Random.nextInt(0, playerBoard.numCells))
+	private fun computerBomb () {
+		var targetCol: Int? = null
+		var targetRow: Int? = null
+
+		if (lastTouch == null) {
+			targetCol = Random.nextInt(0, playerBoard.numCells)
+			targetRow = Random.nextInt(0, playerBoard.numCells)
+		} else {
+			val (col, row) = lastTouch!!
+			if (col + 1 < playerBoard.numCells && playerBoard.isBombed(col, row)) {
+				targetCol = col + 1
+				targetRow = row
+			}
+			else if (col - 1 > 0 && playerBoard.isBombed(col, row)) {
+				targetCol = col - 1
+				targetRow = row
+			}
+			else if (row - 1 > 0 && playerBoard.isBombed(col, row)) {
+				targetCol = col
+				targetRow = row - 1
+			}
+			else if (row + 1 < playerBoard.numCells && playerBoard.isBombed(col, row)) {
+				targetCol = col
+				targetRow = row + 1
+			} else {
+				targetCol = Random.nextInt(0, playerBoard.numCells)
+				targetRow = Random.nextInt(0, playerBoard.numCells)
+			}
 		}
-		else {
-			if (col + 1 < playerBoard.numCells) {
-				bomb(col + 1, row)
-			}
-			else if (col - 1 > 0) {
-				bomb(col - 1, row)
-			}
-			else if (row - 1 > 0) {
-				bomb(col, row - 1)
-			}
-			else {
-				bomb(col, row + 1)
+
+		val touched = playerBoard.cells[targetRow][targetCol] == Board.CellState.SHIP
+		bomb(targetCol, targetRow)
+
+		if (touched) {
+			lastTouch = Pair(targetCol, targetRow)
+			val touchedShip = playerBoard.getShip(targetCol, targetRow)
+
+			if (touchedShip!!.isSank()) {
+				lastTouch = null
 			}
 		}
 	}
