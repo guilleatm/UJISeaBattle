@@ -43,6 +43,8 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 
 			if (isBombed) return
 
+			Log.d("marselo", Pair(col,row).toString())
+
 			computerBoard.bombedCells += Triple(col, row, touched)
 
 			if (touched) {

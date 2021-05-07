@@ -26,7 +26,7 @@ class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 	}
 
 	fun inBoard(col: Int, row: Int): Boolean {
-		return col in oI.first .. (oI.first + numCells) && row in oI.second .. (oI.second + numCells)
+		return col in oI.first until oI.first + numCells && row in oI.second until oI.second + numCells
 	}
 
 	fun setShipOnBoard(ship: Ship) {
