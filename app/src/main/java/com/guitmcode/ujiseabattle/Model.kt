@@ -58,7 +58,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 				}
 			} else {
 				state = SeaBattleAction.COMPUTER_TURN
-				computerBomb()
+				computerBomb(false, col, row)
 			}
 
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
@@ -66,7 +66,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			val touched = isTouched(playerBoard, col, row)
 			val isBombed = playerBoard.isBombed(col, row)
 
-			if (isBombed) computerBomb()
+			if (isBombed) computerBomb(false, col, row)
 
 			playerBoard.bombedCells += Triple(col, row, touched)
 
@@ -82,7 +82,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 					Log.d("marselo", "Computer wins")
 				}
 				else {
-					computerBomb()
+					computerBomb(true, col, row)
 				}
 			} else {
 				state = SeaBattleAction.PLAYER_TURN
@@ -105,7 +105,23 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		}
 	}
 
-	private fun computerBomb () {
-		bomb(Random.nextInt(0, playerBoard.numCells), Random.nextInt(0, playerBoard.numCells))
+	private fun computerBomb (ultimoTocado : Boolean, col: Int, row: Int) {
+		if (ultimoTocado == false) {
+			bomb(Random.nextInt(0, playerBoard.numCells), Random.nextInt(0, playerBoard.numCells))
+		}
+		else {
+			if (col + 1 < playerBoard.numCells) {
+				bomb(col + 1, row)
+			}
+			else if (col - 1 > 0) {
+				bomb(col - 1, row)
+			}
+			else if (row - 1 > 0) {
+				bomb(col, row - 1)
+			}
+			else {
+				bomb(col, row + 1)
+			}
+		}
 	}
 }
