@@ -16,9 +16,12 @@ import java.lang.Float.min
 private const val TOTAL_CELLS_WIDTH = 24
 private const val TOTAL_CELLS_HEIGHT = 14
 private const val BOARD_SIZE = 10
+private const val RESET_COL = 11f
+private const val RESET_ROW = 12.5f
+private const val RESET_SIDE = 2f
 private val CELL_OFFSET = Pair(1, 2)
 
-class Controller(width: Int, height: Int, context: Context) : IGameController, SoundPlayer {
+class Controller(width: Int, height: Int, val context: Context) : IGameController, SoundPlayer {
 	companion object {
 
 		private const val BACKGROUND_COLOR = -0xa64f1f
@@ -35,8 +38,8 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private val xOffset : Float = (width - TOTAL_CELLS_WIDTH * cellSide) / 2.0f
 	private val yOffset : Float = (height - TOTAL_CELLS_HEIGHT * cellSide) / 2.0f
 
-	private val board = Board(BOARD_SIZE, CELL_OFFSET, cellSide.toFloat())
-	private val computerBoard = Board(BOARD_SIZE, Pair(13, 2), cellSide.toFloat())
+	private var board = Board(BOARD_SIZE, CELL_OFFSET, cellSide.toFloat())
+	private var computerBoard = Board(BOARD_SIZE, Pair(13, 2), cellSide.toFloat())
 
 	private lateinit var ships: Array<Ship>
 	private lateinit var computerShips: Array<Ship>
@@ -51,7 +54,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 
 
 	private val graphics: Graphics
-	private val model: Model
+	private lateinit var model: Model
 	private lateinit var soundPool: SoundPool
 	private var victoryId = 0
 	private var moveId = 0
@@ -59,14 +62,25 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	private var animation: AnimatedBitmap? = null
 
 	init {
-		//fillCellCoordinates()
+		graphics = Graphics(width, height)
+		initShips(context)
+		model = Model(this, board, computerBoard, ships)
+		model.createComputerBoard(computerShips)
+	}
+
+	fun restart(context: Context) {
+
 		initShips(context)
 
-		graphics = Graphics(width, height)
+		board = Board(BOARD_SIZE, CELL_OFFSET, cellSide.toFloat())
+		computerBoard = Board(BOARD_SIZE, Pair(13, 2), cellSide.toFloat())
+
+		dragged = null
+
 		//prepareSoundPool(context)
 		model = Model(this, board, computerBoard, ships)
-
 		model.createComputerBoard(computerShips)
+
 	}
 
 	private fun prepareSoundPool(context: Context) {
@@ -124,16 +138,21 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		val originX = board.origin.first - halfLineWidth + xOffset
 		val originY = board.origin.second - halfLineWidth + yOffset
 
-		for (ship in ships) {
-			if (ship.clicked(event) && !ship.set) {
-				if (arrastrando == false) {
-					ship.isHorizontal = !ship.isHorizontal
-				}
-				Log.d("marselo", ship.isHorizontal.toString())
-			}
+		if (clickOnReset(col, row)) {
+			restart(context)
+			return
 		}
 
+
 		if (model.state == Model.SeaBattleAction.PLACE_SHIPS) {
+
+			for (ship in ships) {
+				if (ship.clicked(event) && !ship.set) {
+					if (arrastrando == false) {
+						ship.isHorizontal = !ship.isHorizontal
+					}
+				}
+			}
 
 			if (board.inBoard(col, row)) { // Soltamos click dentro del tablero del jugador
 				val rCol = col - board.oI.first // col: from 0 to board.numCells - 1
@@ -186,6 +205,7 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 		graphics.clear(BACKGROUND_COLOR)
 		drawBoard(board)
 		drawShips()
+		drawResetButton()
 
 		if (model.state != Model.SeaBattleAction.PLACE_SHIPS) {
 			drawBoard(computerBoard)
@@ -239,10 +259,9 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 	}
 
 	fun initShips(context: Context) {
-		Assets.createAssets(context, cellSide.toInt())
+		Assets.createAssets(context, cellSide)
 
 		val occupedCells = 3
-
 		ships = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
 
 		computerShips = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
@@ -275,6 +294,14 @@ class Controller(width: Int, height: Int, context: Context) : IGameController, S
 				graphics.drawBitmap(Assets.todosShips[3], ship.coords.first.toFloat(), ship.coords.second.toFloat())
 			}
 		}
+	}
+
+	fun drawResetButton() {
+		graphics.drawDrawable(Assets.reset, RESET_COL * cellSide, RESET_ROW * cellSide, RESET_SIDE * cellSide, RESET_SIDE * cellSide)
+	}
+
+	fun clickOnReset(col: Int, row: Int): Boolean {
+		return col.toFloat() in RESET_COL .. (RESET_COL + RESET_SIDE) && row.toFloat() in RESET_ROW .. (RESET_ROW + RESET_SIDE)
 	}
 
 }

@@ -9,7 +9,7 @@ class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 	var ships: Array<Ship>? = null
 
 	enum class CellState {
-		WATER, SHIP, BOMBED
+		WATER, SHIP
 	}
 
 	init {

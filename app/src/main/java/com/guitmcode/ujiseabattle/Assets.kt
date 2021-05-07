@@ -48,8 +48,11 @@ object Assets {
 			ship = getScaledSprite(0, 0, SHIP_BITMAP_WIDTH, SHIP_BITMAP_HEIGTH)
 		}
 */
-		if (ship == null)
+		if (ship == null) // No borrar
 			ship = context.getDrawable(R.drawable.ship)
+
+		if (reset == null)
+			reset = context.getDrawable(R.drawable.reset)
 
 		if (!barcosMetidos) {
 			/*todosShips[0] = BitmapFactory.decodeResource(resources, R.drawable.ship)

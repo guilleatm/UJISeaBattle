@@ -15,17 +15,11 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 
 	enum class SeaBattleAction {
 		PLACE_SHIPS,
-		DRAG_INTO_BOARD,
-		DRAG_INSIDE_BOARD,
 		PLAYER_TURN,
 		COMPUTER_TURN,
-		WAITING,
 		END
 	}
 
-	init {
-		restart()
-	}
 
 	fun createComputerBoard(ships: Array<Ship>) {
 		for (ship in ships) {
@@ -37,9 +31,6 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			ship.setCoords() // Para meter las coordenadas reales para e dibujado de sprites
 		}
 		computerBoard.setShipsOnBoard(ships)
-	}
-
-	fun restart() {
 	}
 
 
