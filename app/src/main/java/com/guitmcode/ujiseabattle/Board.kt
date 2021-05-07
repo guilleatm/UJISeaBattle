@@ -76,4 +76,6 @@ class Board(val numCells: Int, val oI: Pair<Int, Int>, cellSize: Float) {
 			if (!ship.isSank()) return false
 		return true
 	}
+
+	fun isTouched(col: Int, row: Int) = cells[row][col] == CellState.SHIP
 }

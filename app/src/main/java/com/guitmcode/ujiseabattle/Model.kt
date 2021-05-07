@@ -39,7 +39,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 
 		if (state == SeaBattleAction.PLAYER_TURN) {
 
-			val touched = isTouched(computerBoard, col, row)
+			val touched = computerBoard.isTouched(col, row)
 			val isBombed = computerBoard.isBombed(col, row)
 
 			if (isBombed) return
@@ -64,7 +64,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
 
-			val touched = isTouched(playerBoard, col, row)
+			val touched = playerBoard.isTouched(col, row)
 			val isBombed = playerBoard.isBombed(col, row)
 
 			if (isBombed) computerBomb()
@@ -93,8 +93,6 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		return
 	}
 
-	fun isTouched(board: Board, col: Int, row: Int) = board.cells[row][col] == Board.CellState.SHIP
-
 	fun updateGameState() {
 
 		if (state == SeaBattleAction.PLACE_SHIPS) {
@@ -115,19 +113,19 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			targetRow = Random.nextInt(0, playerBoard.numCells)
 		} else {
 			val (col, row) = lastTouch!!
-			if (col + 1 < playerBoard.numCells && playerBoard.isBombed(col, row)) {
+			if (col + 1 < playerBoard.numCells && !playerBoard.isBombed(col + 1, row)) { // Derecha
 				targetCol = col + 1
 				targetRow = row
 			}
-			else if (col - 1 > 0 && playerBoard.isBombed(col, row)) {
+			else if (col - 1 > 0 && !playerBoard.isBombed(col - 1, row)) { // Izquierda
 				targetCol = col - 1
 				targetRow = row
 			}
-			else if (row - 1 > 0 && playerBoard.isBombed(col, row)) {
+			else if (row - 1 > 0 && !playerBoard.isBombed(col, row - 1)) { // Arriba
 				targetCol = col
 				targetRow = row - 1
 			}
-			else if (row + 1 < playerBoard.numCells && playerBoard.isBombed(col, row)) {
+			else if (row + 1 < playerBoard.numCells && !playerBoard.isBombed(col, row + 1)) { // Abajo
 				targetCol = col
 				targetRow = row + 1
 			} else {
@@ -136,7 +134,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			}
 		}
 
-		val touched = playerBoard.cells[targetRow][targetCol] == Board.CellState.SHIP
+		val touched = playerBoard.isTouched(targetCol, targetRow)
 		bomb(targetCol, targetRow)
 
 		if (touched) {
