@@ -67,10 +67,10 @@ object Assets {
 			val SHIP_LONG = 3
 			val SHIP_FAT = 1
 
-			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
-			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship2), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
-			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
-			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.barcoroto2), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship1), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship1v), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto1), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto1v), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
 			barcosMetidos = true
 		}
 
