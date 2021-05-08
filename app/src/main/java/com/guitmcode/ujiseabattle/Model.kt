@@ -3,6 +3,8 @@ package com.guitmcode.ujiseabattle
 import android.media.SoundPool
 import android.util.Log
 import java.util.*
+//import java.util.logging.Handler
+import android.os.Handler
 import kotlin.random.Random
 
 class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val computerBoard: Board, val ships: Array<Ship>) {
@@ -14,6 +16,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 	var state = SeaBattleAction.PLACE_SHIPS
 		private set
 	var lastTouch: Pair<Int, Int>? = null
+	val handler = Handler()
 
 	enum class SeaBattleAction {
 		PLACE_SHIPS,
@@ -66,7 +69,6 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			}
 
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
-
 			val touched = isTouched(playerBoard, col, row)
 			val isBombed = playerBoard.isBombed(col, row)
 
@@ -75,7 +77,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			playerBoard.bombedCells += Triple(col, row, touched)
 
 			if (touched) {
-
+				soundPlayer.playBomb()
 				val touchedShip = playerBoard.getShip(col, row)
 				touchedShip!!.updateSank()
 
@@ -89,6 +91,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 					computerBomb()
 				}
 			} else {
+				soundPlayer.playWater()
 				state = SeaBattleAction.PLAYER_TURN
 			}
 
@@ -140,7 +143,8 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		}
 
 		val touched = playerBoard.cells[targetRow][targetCol] == Board.CellState.SHIP
-		bomb(targetCol, targetRow)
+		handler.postDelayed({ bomb(targetCol, targetRow) }, 1500)
+		//bomb(targetCol, targetRow)
 
 		if (touched) {
 			lastTouch = Pair(targetCol, targetRow)
