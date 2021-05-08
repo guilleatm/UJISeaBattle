@@ -17,6 +17,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		private set
 	var lastTouch: Pair<Int, Int>? = null
 	val handler = Handler()
+	var victoriaJugador : Boolean = false
 
 	enum class SeaBattleAction {
 		PLACE_SHIPS,
@@ -60,6 +61,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 
 				if (playerWins) {
 					state = SeaBattleAction.END
+					victoriaJugador = true
 					Log.d("marselo", "Todos los barcos del computer hundidos")
 				}
 			} else {
@@ -84,6 +86,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 				val computerWins = playerBoard.allShipsSank()
 
 				if (computerWins) {
+					victoriaJugador = false
 					state = SeaBattleAction.END
 					Log.d("marselo", "Computer wins")
 				}

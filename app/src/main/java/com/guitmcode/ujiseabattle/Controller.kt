@@ -207,6 +207,7 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 		graphics.clear(BACKGROUND_COLOR)
 		drawBoard(board)
 		drawShips()
+		drawText()
 		drawResetButton()
 
 		if (model.state != Model.SeaBattleAction.PLACE_SHIPS) {
@@ -219,6 +220,7 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 			//drawWinnerLine()
 		return graphics.frameBuffer
 	}
+
 
 	private fun drawBoard(board: Board) {
 
@@ -295,6 +297,24 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 			else if (!ship.isHorizontal && ship.isSank())  {
 				graphics.drawBitmap(Assets.todosShips[3], ship.coords.first.toFloat(), ship.coords.second.toFloat())
 			}
+		}
+	}
+
+	fun drawText() {
+		if (model.state == Model.SeaBattleAction.PLACE_SHIPS) {
+			graphics.drawBitmap(Assets.todosTextos[0], 0f, 0f)
+		}
+		else if (model.state == Model.SeaBattleAction.PLAYER_TURN) {
+			graphics.drawBitmap(Assets.todosTextos[1], 0f, 0f)
+		}
+		else if (model.state == Model.SeaBattleAction.COMPUTER_TURN) {
+			graphics.drawBitmap(Assets.todosTextos[2], 0f, 0f)
+		}
+		else if (model.state == Model.SeaBattleAction.END && model.victoriaJugador == true) {
+			graphics.drawBitmap(Assets.todosTextos[3], 0f, 0f)
+		}
+		else if (model.state == Model.SeaBattleAction.END && model.victoriaJugador == false) {
+			graphics.drawBitmap(Assets.todosTextos[4], 0f, 0f)
 		}
 	}
 
