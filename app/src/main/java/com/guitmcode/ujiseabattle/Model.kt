@@ -1,13 +1,14 @@
 package com.guitmcode.ujiseabattle
 
+import android.media.SoundPool
 import android.util.Log
 import java.util.*
 import kotlin.random.Random
 
 class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val computerBoard: Board, val ships: Array<Ship>) {
 	interface SoundPlayer {
-		fun playVictory()
-		fun playMove()
+		fun playBomb()
+		fun playWater()
 	}
 
 	var state = SeaBattleAction.PLACE_SHIPS
@@ -49,6 +50,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 			computerBoard.bombedCells += Triple(col, row, touched)
 
 			if (touched) {
+				soundPlayer.playBomb()
 				val touchedShip = computerBoard.getShip(col, row)
 				touchedShip!!.updateSank()
 				val playerWins = computerBoard.allShipsSank()
@@ -58,6 +60,7 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 					Log.d("marselo", "Todos los barcos del computer hundidos")
 				}
 			} else {
+				soundPlayer.playWater()
 				state = SeaBattleAction.COMPUTER_TURN
 				computerBomb()
 			}
