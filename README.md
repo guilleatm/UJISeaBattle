@@ -1,7 +1,6 @@
 # UJISeaBattle
 ## TODO:
 4. Arreglar los problemas de resolucion/escalado **SDK BUG**
-10. Letreros (te toca, fin partida, etc...)
 11. Animaciones + graficos
 12. El boton de inicio
 
@@ -17,5 +16,6 @@
 13. Inteligencia del comptador **DONE**
 8. Boton para reiniciar el juego **DONE**
 5. Sonidos **DONE**
+10. Letreros (te toca, fin partida, etc...) **DONE**
 
 
