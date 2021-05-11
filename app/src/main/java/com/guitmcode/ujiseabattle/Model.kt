@@ -7,7 +7,7 @@ import java.util.*
 import android.os.Handler
 import kotlin.random.Random
 
-class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val computerBoard: Board, val ships: Array<Ship>) {
+class Model(private var soundPlayer: SoundPlayer, var playerBoard: Board, var computerBoard: Board, var ships: Array<Ship>) {
 	interface SoundPlayer {
 		fun playBomb()
 		fun playWater()
@@ -26,6 +26,16 @@ class Model(private val soundPlayer: SoundPlayer, val playerBoard: Board, val co
 		END
 	}
 
+	fun reset(soundPlayer: SoundPlayer, playerBoard: Board, computerBoard: Board, ships: Array<Ship>) {
+		this.soundPlayer = soundPlayer
+		this.playerBoard = playerBoard
+		this.computerBoard = computerBoard
+		this.ships = ships
+
+		state = SeaBattleAction.PLACE_SHIPS
+		lastTouch = null
+		victoriaJugador = false
+	}
 
 	fun createComputerBoard(ships: Array<Ship>) {
 		for (ship in ships) {

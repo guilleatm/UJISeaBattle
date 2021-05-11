@@ -79,7 +79,8 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 		dragged = null
 
 		prepareSoundPool(context)
-		model = Model(this, board, computerBoard, ships)
+		//model = Model(this, board, computerBoard, ships)
+		model.reset(this, board, computerBoard, ships)
 		model.createComputerBoard(computerShips)
 
 	}
