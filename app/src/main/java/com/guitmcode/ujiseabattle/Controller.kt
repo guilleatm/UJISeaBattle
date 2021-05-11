@@ -56,8 +56,8 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 	private val graphics: Graphics
 	private lateinit var model: Model
 	private lateinit var soundPool: SoundPool
-	private var victoryId = 0
-	private var moveId = 0
+	private var bombId = 0
+	private var waterId = 0
 
 	private var animation: AnimatedBitmap? = null
 
@@ -66,6 +66,7 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 		initShips(context)
 		model = Model(this, board, computerBoard, ships)
 		model.createComputerBoard(computerShips)
+		prepareSoundPool(context)
 	}
 
 	fun restart(context: Context) {
@@ -77,7 +78,7 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 
 		dragged = null
 
-		//prepareSoundPool(context)
+		prepareSoundPool(context)
 		model = Model(this, board, computerBoard, ships)
 		model.createComputerBoard(computerShips)
 
@@ -92,9 +93,9 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 			.setMaxStreams(5)
 			.setAudioAttributes(attributes)
 			.build()
-		victoryId = soundPool.load(context,
-			R.raw.victory, 0)
-		moveId = soundPool.load(context, R.raw.move, 0)
+		bombId = soundPool.load(context,
+			R.raw.explosion, 0)
+		waterId = soundPool.load(context, R.raw.splash1, 0)
 	}
 
 	override fun onUpdate(deltaTime: Float, touchEvents: List<TouchEvent>) {
@@ -206,6 +207,7 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 		graphics.clear(BACKGROUND_COLOR)
 		drawBoard(board)
 		drawShips()
+		drawText()
 		drawResetButton()
 
 		if (model.state != Model.SeaBattleAction.PLACE_SHIPS) {
@@ -218,6 +220,7 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 			//drawWinnerLine()
 		return graphics.frameBuffer
 	}
+
 
 	private fun drawBoard(board: Board) {
 
@@ -251,12 +254,12 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 	}
 
 
-	override fun playVictory() {
-		//soundPool.play(victoryId, 0.6f, 0.8f, 0, 0, 1f)
+	override fun playBomb() {
+		soundPool.play(bombId, 0.6f, 0.8f, 0, 0, 1f)
 	}
 
-	override fun playMove() {
-		//soundPool.play(moveId, 0.6f, 0.8f, 0, 0, 1f)
+	override fun playWater() {
+		soundPool.play(waterId, 0.6f, 0.8f, 0, 0, 1f)
 	}
 
 	fun initShips(context: Context) {
@@ -297,6 +300,24 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 		}
 	}
 
+	fun drawText() {
+		if (model.state == Model.SeaBattleAction.PLACE_SHIPS) {
+			graphics.drawBitmap(Assets.todosTextos[0], 0f, 0f)
+		}
+		else if (model.state == Model.SeaBattleAction.PLAYER_TURN) {
+			graphics.drawBitmap(Assets.todosTextos[1], 0f, 0f)
+		}
+		else if (model.state == Model.SeaBattleAction.COMPUTER_TURN) {
+			graphics.drawBitmap(Assets.todosTextos[2], 0f, 0f)
+		}
+		else if (model.state == Model.SeaBattleAction.END && model.victoriaJugador == true) {
+			graphics.drawBitmap(Assets.todosTextos[3], 0f, 0f)
+		}
+		else if (model.state == Model.SeaBattleAction.END && model.victoriaJugador == false) {
+			graphics.drawBitmap(Assets.todosTextos[4], 0f, 0f)
+		}
+	}
+
 	fun drawResetButton() {
 		graphics.drawDrawable(Assets.reset, RESET_COL * cellSide, RESET_ROW * cellSide, RESET_SIDE * cellSide, RESET_SIDE * cellSide)
 	}
@@ -304,5 +325,4 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 	fun clickOnReset(col: Int, row: Int): Boolean {
 		return col.toFloat() in RESET_COL .. (RESET_COL + RESET_SIDE) && row.toFloat() in RESET_ROW .. (RESET_ROW + RESET_SIDE)
 	}
-
 }

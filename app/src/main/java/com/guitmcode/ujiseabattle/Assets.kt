@@ -24,8 +24,9 @@ object Assets {
 	var redBallAnimated: AnimatedBitmap? = null
 	var reset: Drawable? = null
 	var barcosMetidos : Boolean = false
+	var textosMetidos : Boolean = false
 
-
+	var todosTextos : ArrayList<Bitmap> = ArrayList()
 
 	private var shipSprites: Bitmap? = null
 	private var ships: SpriteSheet? = null
@@ -72,6 +73,15 @@ object Assets {
 			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto1), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
 			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto1v), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
 			barcosMetidos = true
+		}
+
+		if (!textosMetidos) {
+			todosTextos.add(BitmapFactory.decodeResource(resources, R.drawable.drag))
+			todosTextos.add(BitmapFactory.decodeResource(resources, R.drawable.yourturn))
+			todosTextos.add(BitmapFactory.decodeResource(resources, R.drawable.enemyturn))
+			todosTextos.add(BitmapFactory.decodeResource(resources, R.drawable.victory))
+			todosTextos.add(BitmapFactory.decodeResource(resources, R.drawable.defeat))
+			textosMetidos = true
 		}
 
 		//Log.d("marselo", todosShips.toString())
