@@ -267,36 +267,49 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 		Assets.createAssets(context, cellSide)
 
 		val occupedCells = 3
-		ships = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
+		ships = arrayOf(Ship(Assets.ship!!, 1, cellSide, 0), Ship(Assets.ship!!, 2, cellSide,1), Ship(Assets.ship!!, 3, cellSide,2),
+						Ship(Assets.ship!!, 1, cellSide, 3), Ship(Assets.ship!!, 2, cellSide,4), Ship(Assets.ship!!, 3, cellSide,5),
+						Ship(Assets.ship!!, 1, cellSide, 6), Ship(Assets.ship!!, 2, cellSide,7), Ship(Assets.ship!!, 4, cellSide,8),
+						Ship(Assets.ship!!, 1, cellSide, 9))
 
-		computerShips = arrayOf(Ship(Assets.ship!!, occupedCells, cellSide, 0), Ship(Assets.ship!!, occupedCells, cellSide,1), Ship(Assets.ship!!, occupedCells, cellSide,2))
+		computerShips = arrayOf(Ship(Assets.ship!!, 1, cellSide, 0), Ship(Assets.ship!!, 2, cellSide,1), Ship(Assets.ship!!, 3, cellSide,2),
+				Ship(Assets.ship!!, 1, cellSide, 3), Ship(Assets.ship!!, 2, cellSide,4), Ship(Assets.ship!!, 3, cellSide,5),
+				Ship(Assets.ship!!, 1, cellSide, 6), Ship(Assets.ship!!, 2, cellSide,7), Ship(Assets.ship!!, 4, cellSide,8),
+				Ship(Assets.ship!!, 1, cellSide, 9))
 	}
 
 	fun drawShips() {
 		for (ship in ships) {
+			var indice = 0
 			//graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
 			//graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
 			if (ship.isHorizontal && !ship.isSank()) {
-				graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+				indice = 0
 			}
 			else if (!ship.isHorizontal && !ship.isSank()) {
-				graphics.drawBitmap(Assets.todosShips[1], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+				indice = 1
 			}
 			else if (ship.isHorizontal && ship.isSank()) {
-				graphics.drawBitmap(Assets.todosShips[2], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+				indice = 2
 			}
 			else if (!ship.isHorizontal && ship.isSank()) {
-				graphics.drawBitmap(Assets.todosShips[3], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+				indice = 3
 			}
+			graphics.drawBitmap(Assets.todosShips[(ship.occupedCells - 1) * 4 + indice], ship.coords.first.toFloat(), ship.coords.second.toFloat())
 		}
 		for (ship in computerShips) {
+			var indiceComputer = 0
 			//graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
 			//graphics.drawBitmap(Assets.todosShips[0], ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())
-			if (ship.isHorizontal && ship.isSank()) {
-				graphics.drawBitmap(Assets.todosShips[2], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+
+			if (ship.isHorizontal) {
+				indiceComputer = 2
 			}
-			else if (!ship.isHorizontal && ship.isSank())  {
-				graphics.drawBitmap(Assets.todosShips[3], ship.coords.first.toFloat(), ship.coords.second.toFloat())
+			else if (!ship.isHorizontal) {
+				indiceComputer = 3
+			}
+			if (ship.isSank()) {
+				graphics.drawBitmap(Assets.todosShips[(ship.occupedCells - 1) * 4 + indiceComputer], ship.coords.first.toFloat(), ship.coords.second.toFloat())
 			}
 		}
 	}

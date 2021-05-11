@@ -50,7 +50,7 @@ object Assets {
 		}
 */
 		if (ship == null) // No borrar
-			ship = context.getDrawable(R.drawable.ship)
+			ship = context.getDrawable(R.drawable.ship3)
 
 		if (reset == null)
 			reset = context.getDrawable(R.drawable.reset)
@@ -67,11 +67,29 @@ object Assets {
 
 			val SHIP_LONG = 3
 			val SHIP_FAT = 1
+			val avion_long = 1
+			val avion_fat = 1
+			val barco2_long = 2
+			val barco2_fat = 1
+			val porta_long = 4
+			val porta_fat = 1
 
-			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship1), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
-			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship1v), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
-			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto1), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
-			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto1v), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship1h), cellSide * avion_long,cellSide * avion_fat, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shipv1), cellSide * avion_fat,cellSide * avion_long, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto1h), cellSide * avion_long,cellSide * avion_fat, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto1v), cellSide * avion_fat,cellSide * avion_long, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship2h), cellSide * barco2_long,cellSide * barco2_fat, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship2v), cellSide * barco2_fat,cellSide * barco2_long, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto2h), cellSide * barco2_long,cellSide * barco2_fat, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto2v), cellSide * barco2_fat,cellSide * barco2_long, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship3), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship3v), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto3), cellSide * SHIP_LONG, cellSide * SHIP_FAT, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto3v), cellSide * SHIP_FAT,cellSide * SHIP_LONG, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship4h), cellSide * porta_long, cellSide * porta_fat, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.ship4v), cellSide * porta_fat,cellSide * porta_long, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto4h), cellSide * porta_long, cellSide * porta_fat, true))
+			todosShips.add(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(resources, R.drawable.shiproto4v), cellSide * porta_fat,cellSide * porta_long, true))
 			barcosMetidos = true
 		}
 
