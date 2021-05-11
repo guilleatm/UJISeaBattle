@@ -5,12 +5,12 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import es.uji.vj1229.framework.TouchHandler
 
-private const val DEFAULT_COL = 14
+private const val DEFAULT_COL = 12
 private const val DEFAULT_ROW = 2
 
 class Ship (val drawable: Drawable, val occupedCells: Int, val cellSide: Int, val index: Int, var isHorizontal: Boolean = true){
 
-	var coords: Pair<Int, Int> = Pair((DEFAULT_COL + index - 2) * cellSide, (DEFAULT_ROW + (2 * occupedCells)) * cellSide)
+	var coords: Pair<Int, Int> = Pair((DEFAULT_COL + index) * cellSide, (DEFAULT_ROW + (2 * occupedCells)) * cellSide)
 	var coordsTablero: Pair<Int, Int>? = null
 	val OCoords = coords
 	var set = false

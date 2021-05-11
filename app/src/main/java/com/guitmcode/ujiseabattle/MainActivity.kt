@@ -12,12 +12,14 @@ class MainActivity : GameActivity() {
 
 		requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
+		val sound = if (intent.getBooleanExtra("SOUND", true)) 1f else 0f
+
 
 		val displayMetrics = DisplayMetrics()
 		@Suppress("DEPRECATION")
 		windowManager.defaultDisplay.getMetrics(displayMetrics)
 
-		controller = Controller(displayMetrics.widthPixels, displayMetrics.heightPixels, applicationContext)
+		controller = Controller(displayMetrics.widthPixels, displayMetrics.heightPixels, applicationContext, sound)
 		return controller
 	}
 }

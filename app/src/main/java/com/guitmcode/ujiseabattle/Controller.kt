@@ -21,16 +21,14 @@ private const val RESET_ROW = 12.5f
 private const val RESET_SIDE = 2f
 private val CELL_OFFSET = Pair(1, 2)
 
-class Controller(width: Int, height: Int, val context: Context) : IGameController, SoundPlayer {
+class Controller(width: Int, height: Int, val context: Context, val sound: Float) : IGameController, SoundPlayer {
 	companion object {
 
 		private const val BACKGROUND_COLOR = -0xa64f1f
 		private const val LINE_COLOR = -0x1000000
 		private const val WIN_COLOR = -0xfc000
 
-		private const val MARGIN_FRACTION = 0.1f
 		private const val LINEWIDTH_FRACTION = 0.01f
-		private const val BALL_FRACTION = (1 - 2 * MARGIN_FRACTION - 2 * LINEWIDTH_FRACTION) / 3
 	}
 
 
@@ -66,6 +64,7 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 		initShips(context)
 		model = Model(this, board, computerBoard, ships)
 		model.createComputerBoard(computerShips)
+
 		prepareSoundPool(context)
 	}
 
@@ -256,11 +255,11 @@ class Controller(width: Int, height: Int, val context: Context) : IGameControlle
 
 
 	override fun playBomb() {
-		soundPool.play(bombId, 0.6f, 0.8f, 0, 0, 1f)
+		soundPool.play(bombId, sound, sound, 0, 0, 1f)
 	}
 
 	override fun playWater() {
-		soundPool.play(waterId, 0.6f, 0.8f, 0, 0, 1f)
+		soundPool.play(waterId, sound, sound, 0, 0, 1f)
 	}
 
 	fun initShips(context: Context) {
