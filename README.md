@@ -2,7 +2,6 @@
 ## TODO:
 4. Arreglar los problemas de resolucion/escalado **SDK BUG**
 11. Animaciones + graficos
-12. El boton de inicio
 
 ## DONE
 
@@ -17,5 +16,6 @@
 8. Boton para reiniciar el juego **DONE**
 5. Sonidos **DONE**
 10. Letreros (te toca, fin partida, etc...) **DONE**
+12. El boton de inicio **DONE**
 
 
