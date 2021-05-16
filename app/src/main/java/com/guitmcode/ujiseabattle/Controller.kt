@@ -278,6 +278,10 @@ class Controller(width: Int, height: Int, val context: Context, val sound: Float
 	}
 
 	fun drawShips() {
+		if (model.splash.third == true) {
+			Assets.waterSplash!!.update(0.025f)
+			graphics.drawBitmap(Assets.waterSplash!!.currentFrame, computerBoard.origin.first + model.splash.first.toFloat() * cellSide, computerBoard.origin.second + model.splash.second.toFloat() * cellSide)
+		}
 		for (ship in ships) {
 			var indice = 0
 			//graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())

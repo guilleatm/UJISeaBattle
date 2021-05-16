@@ -25,6 +25,7 @@ object Assets {
 	var reset: Drawable? = null
 	var barcosMetidos : Boolean = false
 	var textosMetidos : Boolean = false
+	var splashMetido : Boolean = false
 
 	var todosTextos : ArrayList<Bitmap> = ArrayList()
 
@@ -37,6 +38,9 @@ object Assets {
 	var ship: Drawable? = null
 	var todosShips : ArrayList<Bitmap> = ArrayList()
 	var animatedShip: AnimatedBitmap? = null
+
+	private var splash : SpriteSheet? = null
+	var waterSplash : AnimatedBitmap? = null
 
 	fun createAssets(context: Context, cellSide: Int) {
 		val resources = context.resources
@@ -54,6 +58,11 @@ object Assets {
 
 		if (reset == null)
 			reset = context.getDrawable(R.drawable.reset)
+
+		if (splash == null) {
+			val sheet = BitmapFactory.decodeResource(resources, R.drawable.splash)
+			splash = SpriteSheet(sheet, 33, 62)
+		}
 
 		if (!barcosMetidos) {
 			/*todosShips[0] = BitmapFactory.decodeResource(resources, R.drawable.ship)
@@ -100,6 +109,18 @@ object Assets {
 			todosTextos.add(BitmapFactory.decodeResource(resources, R.drawable.victory))
 			todosTextos.add(BitmapFactory.decodeResource(resources, R.drawable.defeat))
 			textosMetidos = true
+		}
+
+		if (!splashMetido) {
+			val frames = ArrayList<Bitmap>()
+			for (row in 0 until 2) {
+				splash?.let {
+					frames.addAll(it.getScaledRow(row, 4, cellSide,
+							cellSide))
+				}
+			}
+			waterSplash = AnimatedBitmap(2.0f, true, *frames.toTypedArray())
+			splashMetido = true
 		}
 
 		//Log.d("marselo", todosShips.toString())
