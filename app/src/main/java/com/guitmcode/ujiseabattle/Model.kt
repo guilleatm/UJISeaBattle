@@ -77,7 +77,7 @@ class Model(private var soundPlayer: SoundPlayer, var playerBoard: Board, var co
 				}
 			} else {
 				soundPlayer.playWater()
-				splash = Triple(col, row, true)
+				splash = Triple(computerBoard.oI.first + col, computerBoard.oI.second + row, true)
 				state = SeaBattleAction.COMPUTER_TURN
 				computerBomb()
 			}
@@ -109,7 +109,9 @@ class Model(private var soundPlayer: SoundPlayer, var playerBoard: Board, var co
 				}
 			} else {
 				soundPlayer.playWater()
+				splash = Triple(playerBoard.oI.first + col, playerBoard.oI.second + row, true)
 				state = SeaBattleAction.PLAYER_TURN
+				handler.postDelayed({splash = Triple(col, row, false)}, 1500)
 			}
 
 		}
