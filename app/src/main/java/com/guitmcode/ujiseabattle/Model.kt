@@ -47,8 +47,9 @@ class Model(private var soundPlayer: SoundPlayer, var playerBoard: Board, var co
 				ship.coordsTablero = Pair(Random.nextInt(0, computerBoard.numCells - ship.occupedCells), Random.nextInt(0, computerBoard.numCells - ship.occupedCells))
 			} while (!ship.fits(ship.coordsTablero!!.first, ship.coordsTablero!!.second, computerBoard))
 			computerBoard.setShipOnBoard(ship)
-			ship.setCoords() // Para meter las coordenadas reales para e dibujado de sprites
+			ship.setCoordsM(computerBoard.oI) // Para meter las coordenadas reales para e dibujado de sprites
 		}
+		computerBoard.ships = ships
 		//computerBoard.setShipsOnBoard(ships)
 	}
 

@@ -68,8 +68,8 @@ class Ship (val drawable: Drawable, val occupedCells: Int, val cellSide: Int, va
 
 	fun isSank() = sank <= 0
 
-	fun setCoords() {
-		coords = Pair((DEFAULT_COL + coordsTablero!!.first) * cellSide, (DEFAULT_ROW + coordsTablero!!.second) * cellSide)
+	fun setCoordsM(offset: Pair<Int, Int>) {
+		coords = Pair((offset.first + coordsTablero!!.first) * cellSide, (offset.second + coordsTablero!!.second) * cellSide)
 	}
 
 }
