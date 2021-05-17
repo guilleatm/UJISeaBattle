@@ -206,13 +206,12 @@ class Controller(width: Int, height: Int, val context: Context, val sound: Float
 		// if (!updated) return null
 		graphics.clear(BACKGROUND_COLOR)
 		drawBoard(board)
-		drawShips()
-		drawText()
-		drawResetButton()
-
 		if (model.state != Model.SeaBattleAction.PLACE_SHIPS) {
 			drawBoard(computerBoard)
 		}
+		drawShips()
+		drawText()
+		drawResetButton()
 
 
 		//drawPieces()
