@@ -252,7 +252,6 @@ class Controller(width: Int, height: Int, val context: Context, val sound: Float
 		}
 	}
 
-
 	override fun playBomb() {
 		soundPool.play(bombId, sound, sound, 0, 0, 1f)
 	}
