@@ -281,6 +281,10 @@ class Controller(width: Int, height: Int, val context: Context, val sound: Float
 			Assets.waterSplash!!.update(0.025f)
 			graphics.drawBitmap(Assets.waterSplash!!.currentFrame, model.splash.first.toFloat() * cellSide, model.splash.second.toFloat() * cellSide)
 		}
+		if (model.explosion.third == true) {
+			Assets.bombamapa!!.update(0.025f)
+			graphics.drawBitmap(Assets.bombamapa!!.currentFrame, model.explosion.first.toFloat() * cellSide, model.explosion.second.toFloat() * cellSide)
+		}
 		for (ship in ships) {
 			var indice = 0
 			//graphics.drawDrawable(ship.drawable, ship.coords.first.toFloat(), ship.coords.second.toFloat(), cellSide.toFloat() * ship.occupedCells, cellSide.toFloat())

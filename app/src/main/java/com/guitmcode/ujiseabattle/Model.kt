@@ -19,6 +19,7 @@ class Model(private var soundPlayer: SoundPlayer, var playerBoard: Board, var co
 	val handler = Handler()
 	var victoriaJugador : Boolean = false
 	var splash : Triple<Int, Int, Boolean> = Triple(0, 0, false)
+	var explosion : Triple<Int, Int, Boolean> = Triple(0, 0, false)
 
 	enum class SeaBattleAction {
 		PLACE_SHIPS,
@@ -66,8 +67,10 @@ class Model(private var soundPlayer: SoundPlayer, var playerBoard: Board, var co
 
 			if (touched) {
 				soundPlayer.playBomb()
+				explosion = Triple(computerBoard.oI.first + col, computerBoard.oI.second + row, true)
 				val touchedShip = computerBoard.getShip(col, row)
 				touchedShip!!.updateSank()
+				handler.postDelayed({explosion = Triple(col, row, false)}, 1500)
 				val playerWins = computerBoard.allShipsSank()
 
 				if (playerWins) {
@@ -85,6 +88,7 @@ class Model(private var soundPlayer: SoundPlayer, var playerBoard: Board, var co
 		} else if (state == SeaBattleAction.COMPUTER_TURN) {
 
 			splash = Triple(col, row, false)
+			explosion = Triple(col, row, false)
 			val touched = playerBoard.isTouched(col, row)
 			val isBombed = playerBoard.isBombed(col, row)
 
@@ -94,8 +98,10 @@ class Model(private var soundPlayer: SoundPlayer, var playerBoard: Board, var co
 
 			if (touched) {
 				soundPlayer.playBomb()
+				explosion = Triple(playerBoard.oI.first + col, playerBoard.oI.second + row, true)
 				val touchedShip = playerBoard.getShip(col, row)
 				touchedShip!!.updateSank()
+				handler.postDelayed({explosion = Triple(col, row, false)}, 1500)
 
 				val computerWins = playerBoard.allShipsSank()
 

@@ -26,6 +26,7 @@ object Assets {
 	var barcosMetidos : Boolean = false
 	var textosMetidos : Boolean = false
 	var splashMetido : Boolean = false
+	var explosionMetida : Boolean = false
 
 	var todosTextos : ArrayList<Bitmap> = ArrayList()
 
@@ -41,6 +42,9 @@ object Assets {
 
 	private var splash : SpriteSheet? = null
 	var waterSplash : AnimatedBitmap? = null
+
+	private var explosion : SpriteSheet? = null
+	var bombamapa : AnimatedBitmap? = null
 
 	fun createAssets(context: Context, cellSide: Int) {
 		val resources = context.resources
@@ -62,6 +66,11 @@ object Assets {
 		if (splash == null) {
 			val sheet = BitmapFactory.decodeResource(resources, R.drawable.splash)
 			splash = SpriteSheet(sheet, 33, 62)
+		}
+
+		if (explosion == null) {
+			val sheet2 = BitmapFactory.decodeResource(resources, R.drawable.explosion)
+			explosion = SpriteSheet(sheet2, 400, 400)
 		}
 
 		if (!barcosMetidos) {
@@ -121,6 +130,18 @@ object Assets {
 			}
 			waterSplash = AnimatedBitmap(2.0f, true, *frames.toTypedArray())
 			splashMetido = true
+		}
+
+		if (!explosionMetida) {
+			val frames2 = ArrayList<Bitmap>()
+			for (row in 0 until 4) {
+				explosion?.let {
+					frames2.addAll(it.getScaledRow(row, 4, cellSide,
+							cellSide))
+				}
+			}
+			bombamapa = AnimatedBitmap(2.0f, true, *frames2.toTypedArray())
+			explosionMetida = true
 		}
 
 		//Log.d("marselo", todosShips.toString())
